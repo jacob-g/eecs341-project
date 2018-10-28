@@ -1,0 +1,45 @@
+<?php
+//an element on a page that includes some base HTML and the ability to bind variables
+class PageElement {
+	private $raw_text;
+	private $params = array();
+	
+	//initialize a PageElement with a given content file (in the templates/ directory)
+	function __construct($content_file) {
+		$this->raw_text = file_get_contents(SRV_ROOT . '/templates/' . $content_file);
+	}
+	
+	//bind a parameter to a value (the parameter is stored in the content file as "<$(key)/>"
+	function bind($key, $val) {
+		$this->params[$key] = $val;
+	}
+	
+	//return the text of this page element with the bound parameters
+	function render() {
+		$out_text = $this->raw_text; //set the raw text
+		//bind each parameter to the raw text
+		foreach ($this->params as $key => $val) {
+			$out_text = str_replace('<$(' . $key . ')/>', $val, $out_text);
+		}
+		return $out_text; //return the text with the bound parameters
+	}
+}
+
+//a collection of page elements that can be bundled together
+class MultiPageElement {
+	private $elements = array(); //each individual page element we have
+	
+	//add an element
+	function addElement(PageElement $element) {
+		$this->elements[] = $element;
+	}
+	
+	//render the page by just rendering each page element and concatenating them
+	function render() {
+		$outstring = '';
+		foreach ($this->elements as $element) {
+			$outstring .= $element->render();
+		}
+		return $outstring;
+	}
+}
