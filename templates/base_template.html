@@ -7,7 +7,7 @@ html * {
 
 .header {
 	width: 300%; 
-	padding: 5px; 
+	padding: 5px;
 	font-family: sans-serif; 
 	font-size: 20px;
 }
@@ -19,6 +19,14 @@ html * {
 
 .theme_color {
 	background-color: #BBF;
+}
+
+.page-border {
+	border: solid;
+	border-width: 1px;
+	border-color: #AAA;
+	padding: 30px;
+	background-color: white;
 }
 
 </style>
@@ -43,9 +51,9 @@ html * {
 					<img class="img-responsive img-thumbnail" src="/static/eamon.jpg" />
 				</div>
 				<div class="col-md-10 header text-info">
-					<strong>EamonBB - a friendly web forum</strong>
+					<strong>&Eacute;amonBB - a friendly web forum</strong>
 				</div>
-				<div class="col-md-1"><a href="/login/">Login</a></div>
+				<div class="col-md-1"><a href="">Login</a></div>
 			</div>
 			<div class="row">
 				<div class="col-md-2">
@@ -69,17 +77,17 @@ html * {
 		</div>
 </head>
 
-<body>
+<body style="background-color: #DEE">
 	<div id="header">
 	
 	</div>
 	<br />
-	<div class="container">
+	<div class="container page-border">
 		<$(page_contents)/>
 	</div>
 	<br />
 	<div id="footer" class="text-center">
-		Copyright &copy;2018 EamonBB, Inc.
+		Copyright &copy;2018 &Eacute;amonBB, Inc.
 	</div>
 </body>
 </html>
