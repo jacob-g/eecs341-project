@@ -1,18 +1,84 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<style>
+html * {
+	font-family: sans-serif; 
+}
+
+.header {
+	width: 300%; 
+	padding: 5px; 
+	font-family: sans-serif; 
+	font-size: 20px;
+}
+
+.header_btn {
+	border-radius: 10px; 
+	margin: 10px;
+}
+
+.theme_color {
+	background-color: #BBF;
+}
+
+</style>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><$(page_title)/></title>
+
+		<link rel="shortcut icon"
+			href="/static/eamon.jpg" />
+		<link rel="stylesheet" 
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+			integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
+			crossorigin="anonymous">
+
+		<div class="container theme_color">
+			<div class="row">
+				<div class="col-md-1">
+					<img class="img-responsive img-thumbnail" src="/static/eamon.jpg" />
+				</div>
+				<div class="col-md-10 header text-info">
+					<strong>EamonBB - a friendly web forum</strong>
+				</div>
+				<div class="col-md-1"><a href="/login/">Login</a></div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<a href="/"><button class="btn btn-block header_btn"><strong>Home</strong></button></a></div>
+				<div class="col-md-2">
+					<a href="/about/"><button class="btn btn-block header_btn"><strong>About</strong></button></a>
+				</div>
+				<div class="col-md-2">
+					<a href="/get-started/"><button class="btn btn-block header_btn"><strong>Get Started</strong></button></a>
+				</div>
+				<div class="col-md-2">
+					<a href=""><button class="btn btn-block header_btn"><strong>Forums</strong></button></a>
+				</div>
+				<div class="col-md-2">
+					<a href="/development/"><button class="btn btn-block header_btn"><strong>Development</strong></button></a>
+				</div>
+				<div class="col-md-2">
+					<a href="/contact/"><button class="btn btn-block header_btn"><strong>Contact Us</strong></button></a>
+				</div>
+			</div>
+		</div>
 </head>
 
 <body>
 	<div id="header">
-		<h1>EamonBB</h1>
+	
 	</div>
-	<div>
+	<br />
+	<div class="container">
 		<$(page_contents)/>
 	</div>
-	<div id="footer">
+	<br />
+	<div id="footer" class="text-center">
 		Copyright &copy;2018 EamonBB, Inc.
 	</div>
 </body>
