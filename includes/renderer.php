@@ -43,3 +43,17 @@ class MultiPageElement {
 		return $outstring;
 	}
 }
+
+//create a form with given fields (array in the form [id] => caption)
+function create_form($fields) {
+	$form_elements = new MultiPageElement();
+	foreach ($fields as $id => $info) {
+		$form_element = new PageElement('formfield.html');
+		$form_element->bind('name', $id);
+		$form_element->bind('label', $info['caption']);
+		$form_element->bind('type', $info['type']);
+		$form_elements->addElement($form_element);
+	}
+	
+	return $form_elements;
+}

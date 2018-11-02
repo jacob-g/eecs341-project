@@ -1,16 +1,12 @@
 <!-- <h2 class="text-center">Login</h2> -->
 
+<$(login_error)/>
 <div style="padding-left: 40%; padding-right: 40%" align="center">
-	<p><br />
-		<div class="text-left">&nbsp; Username: <br /></div>
-		<input /><br /><br />
-		<div class="text-left">&nbsp; Password: <br /></div>
-		<input /><br />
-	</p><br />
-	<div align="left">&nbsp;
-		<button class="btn btn-primary" align="left">Sign in</button>
-		<br /><br />
-	</div>
+	
+	<form action="/login/" method="post" enctype="multipart/form-data">
+		<$(form_elements)/>
+		<p><input type="submit" class="btn btn-primary" value="Log in" name="form_sent" /></p>
+	</form>
 	<p>
 		<a href="">Create a new Account</a><br /><br />
 		<a href="">Forgot Password?</a>
