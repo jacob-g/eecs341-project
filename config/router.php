@@ -6,7 +6,7 @@ $page_routes = array(
 		'content'	=> 'index.html',
 		'behavior'	=> 'index.php'
 	),
-	'/login/' => array(
+	'/login/$type' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'login_page.html',
 		'behavior'	=> 'login.php'
