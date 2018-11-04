@@ -6,6 +6,7 @@ if (isset($_POST['form_sent'])) {
 	$statement = query('SELECT id FROM users WHERE name=? AND password=?', 'ss', array($_POST['username'], ebb_hash($_POST['password'])));
 	$statement->bind_result($user_id);
 	if ($statement->fetch()) {
+		$_SESSION['user_id'] = $user_id;
 		redirect('/');
 	} else {
 		$alert_element = new PageElement('basicwarning.html');

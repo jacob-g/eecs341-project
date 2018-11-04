@@ -9,5 +9,6 @@ include SRV_ROOT . '/includes/database.php';
 include SRV_ROOT . '/config/router.php';
 include SRV_ROOT . '/includes/router.php';
 include SRV_ROOT . '/includes/renderer.php';
+include SRV_ROOT . '/includes/login.php';
 
 echo route_page($_SERVER['REQUEST_URI']);

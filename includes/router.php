@@ -14,8 +14,10 @@ class RoutedPage {
 	//render the page by placing the page contents inside the template and then running the script and replacing the appropriate parameters with their values
 	//you can pass in $url_params, the parameters specified in the URL definition
 	function render($url_params = array()) {
+		global $global_page_params;
 		$page_params = array();
 		$out_text = str_replace('<$(page_contents)/>', $this->raw_text, $this->base_template);
+		$page_params = array_merge($global_page_params, $page_params);
 		include SRV_ROOT . '/scripts/' . $this->script_file;
 		foreach ($page_params as $key => $val) {
 			$out_text = str_replace('<$(' . $key . ')/>', $val, $out_text);
@@ -62,3 +64,5 @@ function route_page($path) {
 		echo $page->render();
 	}
 }
+
+$global_page_params = array(); //the variable that will store all global page parameters
