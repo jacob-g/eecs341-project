@@ -11,6 +11,26 @@ $page_routes = array(
 		'content'	=> 'login_page.html',
 		'behavior'	=> 'login.php'
 	),
+	'/register/' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'register.html',
+		'behavior'	=> 'register.php'
+	),
+	'/forums/' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'forum_index.html',
+		'behavior'	=> 'forum_index.php'
+	),
+	'/forums/forum/$forum_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'view_forum.html',
+		'behavior'	=> 'view_forum.php'
+	),
+	'/forums/forum/$forum_id/topic/$topic_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'view_topic.html',
+		'behavior'	=> 'view_topic.php'
+	),
 	'/about/' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'about.html',
