@@ -16,12 +16,14 @@ if (isset($_POST['form_sent'])) {
 	//if there are, then mark the user as logged in
 	if ($statement->fetch()) {
 		$_SESSION['user_id'] = $user_id;
+		$statement->close();
 		redirect('/');
 	} else { //...and if there aren't, show a warning to the user saying there aren't
 		$alert_element = new PageElement('basicwarning.html');
 		$alert_element->bind('text', 'Invalid username or password');
 		$page_params['login_error'] = $alert_element->render();
 	}
+	$statement->close();
 }
 
 //create the login form

@@ -11,17 +11,18 @@ function query($query, $param_types = '', $params = array()) {
 	//prepare the statement
 	$statement = $mysqli->prepare($query);
 	if (!$statement) {
-		display_error('Failed to prepare query');
+		display_error('Failed to prepare query: <b>' . $mysqli->error() . '</b>');
 	}
 	
-	//bind the parameters
-	$bind_params = array($param_types);
-	foreach ($params as &$param) {
-		$bind_params[] = &$param;
-	}
-	
-	if (!call_user_func_array(array($statement, 'bind_param'), $bind_params)) {
-		display_error('Failed to bind parameters to query');
+	//bind the parameters if any are passed
+	if ($param_types != '' && !empty($params)) {
+		$bind_params = array($param_types);
+		foreach ($params as &$param) {
+			$bind_params[] = &$param;
+		}
+		if (!call_user_func_array(array($statement, 'bind_param'), $bind_params)) {
+			display_error('Failed to bind parameters to query');
+		}
 	}
 	
 	//execute the query

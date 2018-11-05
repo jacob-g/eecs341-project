@@ -23,6 +23,7 @@ if (isset($_SESSION['user_id'])) { //if a user ID is set, the user may be logged
 			'username'	=> $username
 		);
 	}
+	$statement->close();
 }
 
 //if the user is not logged in, show a message inviting them to log in
