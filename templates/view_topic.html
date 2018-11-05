@@ -1,1 +1,23 @@
-<!-- TODO: create a page to view all the posts in a topic -->
+<table class="table table-bordered theme_color">
+ 	<thead>
+		<tr style="background-color: #AAF">
+			<th width="20%">User</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<$(post_rows)/>
+	</tbody>
+</table>
+
+<div style="background-color: #DDF; padding: 10px">
+	<form action="/forums/forum/<$(forum_id)/>/topic/<$(topic_id)/>" method="post" enctype="multipart/form-data">
+		<p><strong><i class="far fa-comments"></i>&nbsp;Post Reply:</strong></p>
+		<div align="center">
+			<textarea style="width: 100%; height: 100px;"></textarea>
+		</div>
+		<br />&nbsp;&nbsp;
+		<input type="submit" class="btn" name="post_reply" value="Reply" />
+		<br />
+	</button>
+</div>
