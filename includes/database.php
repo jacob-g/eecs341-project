@@ -11,7 +11,7 @@ function query($query, $param_types = '', $params = array()) {
 	//prepare the statement
 	$statement = $mysqli->prepare($query);
 	if (!$statement) {
-		display_error('Failed to prepare query: <b>' . $mysqli->error() . '</b>');
+		display_error('Failed to prepare query: <b>' . $mysqli->error . '</b>');
 	}
 	
 	//bind the parameters if any are passed
