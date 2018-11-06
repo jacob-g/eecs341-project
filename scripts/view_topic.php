@@ -1,6 +1,5 @@
 <?php
-//make sure that the topic and forum exist
-//TODO: make sure the user has permission to view
+//make sure that the topic and forum exist and that the user has permission to view them
 $forum_id = intval($url_params['forum_id']);
 $topic_id = intval($url_params['topic_id']);
 $statement = query('SELECT f.name,t.name 

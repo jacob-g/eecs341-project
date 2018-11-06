@@ -1,5 +1,5 @@
 <?php
-//get the forum title
+//get the forum title and make sure the user has permission to view this forum
 $forum_id = $url_params['forum_id'];
 $statement = query('SELECT f.name
 	FROM forum AS f LEFT JOIN forum_group_permissions AS fgp ON fgp.forum_ID=f.ID AND fgp.group_ID=?
