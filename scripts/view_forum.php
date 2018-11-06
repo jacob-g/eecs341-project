@@ -3,7 +3,7 @@
 $forum_id = $url_params['forum_id'];
 $statement = query('SELECT f.name
 	FROM forum AS f LEFT JOIN forum_group_permissions AS fgp ON fgp.forum_ID=f.ID AND fgp.group_ID=?
-	WHERE f.ID=? AND (fgp.view_forum=1 OR (fgp.view_forum IS NULL AND (SELECT view_forums FROM groups WHERE ID=?)))', 'iii', array($user_info['group'], $forum_id, $user_info['group']));
+	WHERE f.ID=? AND (fgp.view_forum=1 OR (fgp.view_forum IS NULL AND (SELECT view_forums FROM groups WHERE ID=?)=1))', 'iii', array($user_info['group'], $forum_id, $user_info['group']));
 $statement->bind_result($forum_name);
 if ($statement->fetch()) { //if we have the ID, then set the forum title in all appropriate pages
 	$page_params['page_title'] = $forum_name . ' - &Eacute;amonBB Forums';

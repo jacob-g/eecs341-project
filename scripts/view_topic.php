@@ -3,7 +3,9 @@
 //TODO: make sure the user has permission to view
 $forum_id = intval($url_params['forum_id']);
 $topic_id = intval($url_params['topic_id']);
-$statement = query('SELECT f.name,t.name FROM topic AS t INNER JOIN forum AS f ON f.ID=t.forum_ID WHERE f.ID=? AND t.ID=?', 'ii', array($forum_id, $topic_id));
+$statement = query('SELECT f.name,t.name 
+	FROM topic AS t INNER JOIN forum AS f ON f.ID=t.forum_ID LEFT JOIN forum_group_permissions AS fgp ON fgp.forum_ID=f.ID AND fgp.group_ID=?
+	WHERE f.ID=? AND t.ID=? AND (fgp.view_forum=1 OR (fgp.view_forum IS NULL AND (SELECT view_forums FROM groups WHERE ID=?)=1))', 'iiii', array($user_info['group'], $forum_id, $topic_id, $user_info['group']));
 $statement->bind_result($forum_name, $topic_name);
 if ($statement->fetch()) {
 	$page_params['page_title'] = $topic_name . ' - ' . $forum_name . ' - &Eacute;amonBB Forums'; //TODO: get the topic and forum name
