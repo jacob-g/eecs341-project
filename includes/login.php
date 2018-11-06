@@ -31,4 +31,11 @@ if (isset($_SESSION['user_id'])) { //if a user ID is set, the user may be logged
 if (!$logged_in) {
 	$login_link = new PageElement('loginlink.html');
 	$global_page_params['login_text'] = $login_link->render();
+	
+	//set the user information to everything for the default user
+	$user_info = array(
+		'id'		=> '-1',
+		'username'	=> '',
+		'group'		=> '1'
+	);
 }
