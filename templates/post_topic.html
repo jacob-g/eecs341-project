@@ -1,0 +1,45 @@
+<h2>Post a New Topic</h2>
+<br />
+
+<p class="required">Required fields</p>
+
+<form action="/forums/post_topic/<$(forum_id)/>" method="post" enctype="multipart/form-data">
+	<$(error_message)/>
+
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th scope="row" class="required">Forum</th>
+				<td>
+					<$(forum_name)/>
+				</td>
+			</tr>
+			<tr>
+				<th width="30%" scope="row" class="required">Subject</th>
+				<td width="70%">
+					<input name="subject" required="required" class="form-control" type="text" /> 
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">Message</th>
+				<td>
+					<textarea name="message" rows="6" class="form-control"></textarea>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div align="center">
+		<input type="submit" class="btn btn-primary" name="form_sent" value="Create Topic" />
+	</div>
+</form>
+
+<style>
+	.required:after {
+		content:" *";
+		color: red;
+	}
+
+</style>
+
+

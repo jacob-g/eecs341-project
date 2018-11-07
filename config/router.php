@@ -26,6 +26,11 @@ $page_routes = array(
 		'content'	=> 'view_forum.html',
 		'behavior'	=> 'view_forum.php'
 	),
+	'/forums/post_topic/$forum_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'post_topic.html',
+		'behavior'	=> 'post_topic.php'
+	),
 	'/forums/forum/$forum_id/topic/$topic_id' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'view_topic.html',

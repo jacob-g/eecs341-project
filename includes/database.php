@@ -27,7 +27,7 @@ function query($query, $param_types = '', $params = array()) {
 	
 	//execute the query
 	if (!$statement->execute()) {
-		display_error('Failed to run query');
+		display_error('Failed to run query: <b>' . $mysqli->error . '</b>');
 	}
 	
 	return $statement;

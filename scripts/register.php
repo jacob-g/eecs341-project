@@ -19,7 +19,7 @@ if (isset($_POST['form_sent'])) { //process form input if any exists
 	}
 	
 	if (empty($errors)) { //if the user does not already exist, then create the user and redirect the user to the login page
-		$statement = query('INSERT INTO users(name,email,password,group_ID) VALUES(?,?,?,?)', 'sssi', array($_POST['username'], $_POST['email'], ebb_hash($_POST['password']), DEFAULT_USER_GROUP));
+		query('INSERT INTO users(name,email,password,group_ID) VALUES(?,?,?,?)', 'sssi', array($_POST['username'], $_POST['email'], ebb_hash($_POST['password']), DEFAULT_USER_GROUP))->close();
 		$mysqli->commit();
 		redirect('/login/registered');
 	} else { //if the user does already exist (or there are any other errors), then discard the transaction and show an error message
