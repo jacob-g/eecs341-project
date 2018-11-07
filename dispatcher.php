@@ -1,6 +1,8 @@
 <?php
 define('SRV_ROOT', dirname(__FILE__));
 
+include SRV_ROOT . '/config/constants.php';
+
 include SRV_ROOT . '/includes/core.php';
 
 include SRV_ROOT . '/config/database.php';

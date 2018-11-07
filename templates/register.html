@@ -1,1 +1,59 @@
-<!-- TODO: create registration page -->
+<h2>Join &Eacute;amonBB - Create your personal account</h2>
+<br />
+
+<$(error_message)/>
+
+<p class="required">Required fields</p>
+
+<form action="/register/" method="post" enctype="multipart/form-data">
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th scope="row" class="required">Username </th>
+				<td>
+					<input name="username" autofocus="autofocus" required="required" class="form-control" autocomplete="off" spellcheck="false" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">Email Address </th>
+				<td>
+					<input name="email" class="form-control" type="text" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" class="required">Password</th>
+				<td>
+					<input name="password" required="required" class="form-control" type="password" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" class="required">Comfirm Password</th>
+				<td>
+					<input name="password-confirm" required="required" class="form-control" type="password" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<div align="center">
+		<input type="submit" class="btn btn-primary" name="form_sent" value="Create Account" />
+	</div>
+</form>
+
+<style>
+	.required:after {
+		content:" *";
+		color: red;
+	}
+
+	input[type=checkbox] {
+	  /* Double-sized Checkboxes */
+	  -ms-transform: scale(1.5); /* IE */
+	  -moz-transform: scale(1.5); /* FF */
+	  -webkit-transform: scale(1.5); /* Safari and Chrome */
+	  -o-transform: scale(1.5); /* Opera */
+	  padding: 10px;
+	}	
+</style>
+
+

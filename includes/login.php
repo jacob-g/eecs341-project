@@ -36,6 +36,6 @@ if (!$logged_in) {
 	$user_info = array(
 		'id'		=> '-1',
 		'username'	=> '',
-		'group'		=> '1'
+		'group'		=> GUEST_USER_GROUP
 	);
 }
