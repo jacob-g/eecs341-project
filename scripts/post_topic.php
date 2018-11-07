@@ -4,7 +4,7 @@ $page_params['page_title'] = 'Post New Topic';
 $forum_id = intval($url_params['forum_id']);
 $page_params['forum_id'] = $forum_id;
 
-//see if the user is allowed to submit a reply
+//see if the user is allowed to post a topic
 $statement = query('SELECT f.name
 	FROM forum AS f LEFT JOIN forum_group_permissions AS fgp ON fgp.forum_ID=f.ID AND fgp.group_ID=?
 	WHERE f.ID=? AND (fgp.post_topics=1 OR (fgp.post_topics IS NULL AND (SELECT post_topics FROM groups WHERE ID=?)=1))', 'iii', array($user_info['group'], $forum_id, $user_info['group']));

@@ -29,3 +29,15 @@ while ($statement->fetch()) {
 }
 $page_params['topic_rows'] = $topic_rows->render();
 $page_params['forum_id'] = $forum_id;
+
+//see if we have permission to post new topics
+$statement = query('SELECT 1
+	FROM groups AS g LEFT JOIN forum_group_permissions AS fgp ON fgp.group_ID=g.ID AND fgp.forum_ID=?
+	WHERE g.ID=? AND (fgp.post_topics=1 OR (fgp.post_topics IS NULL AND g.post_topics=1))', 'ii', array($forum_id, $user_info['group']));
+if ($statement->fetch()) {
+	$post_topic_link = new PageElement('post_topic_link.html');
+	$post_topic_link->bind('forum_id', $forum_id);
+	$page_params['post_topic_link'] = $post_topic_link->render();
+} else {
+	$page_params['post_topic_link'] = '';
+}
