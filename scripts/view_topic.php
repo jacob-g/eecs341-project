@@ -17,6 +17,18 @@ if ($statement->fetch()) { //the topic exists, and we have a topic and forum nam
 }
 $statement->close();
 
+//see if the user is allowed to submit a reply
+$statement = query('SELECT g.ID FROM groups AS g LEFT JOIN forum_group_permissions AS fgp ON fgp.group_ID=g.ID WHERE g.ID=? AND (fgp.post_replies=1 OR (fgp.post_replies IS NULL AND g.post_replies=1))', 'i', array($user_info['group']));
+$can_post_reply = $statement->fetch();
+$statement->close();
+
+//if we are trying to submit a reply and have permission to, then do so
+if ($can_post_reply && isset($_POST['post_reply'])) {
+	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE); //begin a MySQLi transaction for creating the reply
+	query('INSERT INTO post(topic_ID,name,description,poster_ID) VALUES(?,\'\',?,?)', 'isi', array($topic_id, $_POST['message'], $user_info['id']));
+	$mysqli->commit();
+}
+
 //get all of the posts associated with this topic and show them
 $statement = query('SELECT p.description,u.name,p.posted,u.registered FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID WHERE p.topic_ID=? ORDER BY posted ASC', 'i', array($topic_id));
 $statement->bind_result($message, $author_username, $post_time, $author_registered);
@@ -31,10 +43,8 @@ while ($statement->fetch()) {
 $statement->close();
 $page_params['post_rows'] = $post_rows->render();
 
-//see if the user has permission to post replies in this forum, and if so show the reply box
-$statement = query('SELECT g.ID FROM groups AS g LEFT JOIN forum_group_permissions AS fgp ON fgp.group_ID=g.ID WHERE g.ID=? AND (fgp.post_replies=1 OR (fgp.post_replies IS NULL AND g.post_replies=1))', 'i', array($user_info['group']));
-$statement->bind_result($gid);
-if ($statement->fetch()) {
+//if the user has permission to post a reply, show the reply box
+if ($can_post_reply) {
 	$reply_box = new PageElement('post_reply.html');
 	$reply_box->bind('forum_id', $forum_id);
 	$reply_box->bind('topic_id', $topic_id);
@@ -42,4 +52,3 @@ if ($statement->fetch()) {
 } else {
 	$page_params['reply_box'] = '';
 }
-$statement->close();
