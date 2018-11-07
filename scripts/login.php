@@ -7,7 +7,16 @@ if (isset($url_params['type']) && $url_params['type'] == 'out') {
 	redirect('/');
 }
 
-$page_params['login_error'] = '';
+$page_params['login_error'] = ''; //by default, no text is displayed for the login notice/error box
+
+//if we were sent here by the registration page, show a message indicating that the registration was successful
+if (isset($url_params['type']) && $url_params['type'] == 'registered') {
+	$alert_element = new PageElement('basicnotice.html');
+	$alert_element->bind('text', 'Your account has been created successfully! You may now log in.');
+	$page_params['login_error'] = $alert_element->render();
+}
+
+
 //if the user sent a form request, try to log them in
 if (isset($_POST['form_sent'])) {
 	//see if there are any users with the given name and password
