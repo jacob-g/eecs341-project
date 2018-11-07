@@ -30,6 +30,10 @@ while ($statement->fetch()) {
 $page_params['topic_rows'] = $topic_rows->render();
 $page_params['forum_id'] = $forum_id;
 
+//render the header showing the topic name
+$forum_header = new PageElement('forum_header.html');
+$forum_header->bind('forum_name', $forum_name);
+
 //see if we have permission to post new topics
 $statement = query('SELECT 1
 	FROM groups AS g LEFT JOIN forum_group_permissions AS fgp ON fgp.group_ID=g.ID AND fgp.forum_ID=?
@@ -37,7 +41,9 @@ $statement = query('SELECT 1
 if ($statement->fetch()) {
 	$post_topic_link = new PageElement('post_topic_link.html');
 	$post_topic_link->bind('forum_id', $forum_id);
-	$page_params['post_topic_link'] = $post_topic_link->render();
+	$forum_header->bind('post_topic_link', $post_topic_link->render());
 } else {
-	$page_params['post_topic_link'] = '';
+	$forum_header->bind('post_topic_link', '');
 }
+
+$page_params['above_page_text'] = $forum_header->render();

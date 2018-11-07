@@ -57,3 +57,5 @@ function create_form($fields) {
 	
 	return $form_elements;
 }
+
+$global_page_params['above_page_text'] = '';

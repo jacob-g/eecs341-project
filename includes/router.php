@@ -17,7 +17,7 @@ class RoutedPage {
 		global $global_page_params, $user_info, $logged_in, $mysqli;
 		$page_params = array();
 		$out_text = str_replace('<$(page_contents)/>', $this->raw_text, $this->base_template);
-		$page_params = array_merge($global_page_params, $page_params);
+		$page_params = array_merge($page_params, $global_page_params);
 		include SRV_ROOT . '/scripts/' . $this->script_file;
 		foreach ($page_params as $key => $val) {
 			$out_text = str_replace('<$(' . $key . ')/>', $val, $out_text);
