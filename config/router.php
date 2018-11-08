@@ -46,6 +46,11 @@ $page_routes = array(
 		'content'	=> 'about.html',
 		'behavior'	=> 'about.php'
 	),
+	'/profile/' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'profile.html',
+		'behavior'	=> 'profile.php'
+	),
 	'/contact/' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'contact.html',

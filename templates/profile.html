@@ -1,0 +1,78 @@
+<h2>Profile Settings</h2>
+<br />
+
+<table class="table table-bordered">
+	<tbody>
+		<tr>
+			<th scope="row" width="20%">Username </th>
+			<td>
+				<$(username)/> 
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<br />
+<h4>Change Email</h4>
+<p>Current email address is: <$(email_address)/></p>
+<$(email_notice)/>
+
+<form action="/profile/" method="post" enctype="multipart/form-data">
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th scope="row" width="20%">Email Address </th>
+				<td>
+					<input name="email" type="email" class="form-control">&nbsp;&nbsp;
+				</td>
+				<td width="20%">
+					<input type="submit" class="btn" name="change_email" value="Change Email" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+
+<br />
+<hr />
+<br />
+
+<h4>Change Password</h4>
+<$(password_notice)/>
+
+<form action="/profile/" method="post" enctype="multipart/form-data">
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th scope="row" width="20%">Current Password</th>
+				<td>
+					<input name="current-password" required="required" class="form-control" type="password" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" width="20%">Password</th>
+				<td>
+					<input name="password" required="required" class="form-control" type="password" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">Confirm Password</th>
+				<td>
+					<input name="password-confirm" required="required" class="form-control" type="password" /> 
+	
+				</td>
+				<td width="20%">
+					<input type="submit" class="btn" name="change_password" value="Change Password" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+
+<style>
+	.required:after {
+		content:" *";
+		color: red;
+	}
+<style>

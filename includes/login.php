@@ -6,8 +6,8 @@ $cur_user_info = array(); //a variable that stores information about the current
 
 $logged_in = false;
 if (isset($_SESSION['user_id'])) { //if a user ID is set, the user may be logged in
-	$statement = query('SELECT name,group_ID FROM users WHERE ID=?', 'i', array($_SESSION['user_id'])); //pull the user's username from the database
-	$statement->bind_result($username, $group_id);
+	$statement = query('SELECT name,group_ID,email FROM users WHERE ID=?', 'i', array($_SESSION['user_id'])); //pull the user's username from the database
+	$statement->bind_result($username, $group_id, $email);
 	if ($statement->fetch()) { //see if there are any records associated with this user ID
 		//if there are, then...
 		$logged_in = true; //...mark that the user is logged in
@@ -21,7 +21,8 @@ if (isset($_SESSION['user_id'])) { //if a user ID is set, the user may be logged
 		$user_info = array(
 			'id'		=> $_SESSION['user_id'],
 			'username'	=> $username,
-			'group'		=> $group_id
+			'group'		=> $group_id,
+			'email'		=> $email
 		);
 	}
 	$statement->close();

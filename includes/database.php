@@ -21,7 +21,7 @@ function query($query, $param_types = '', $params = array()) {
 			$bind_params[] = &$param;
 		}
 		if (!call_user_func_array(array($statement, 'bind_param'), $bind_params)) {
-			display_error('Failed to bind parameters to query');
+			display_error('Failed to bind parameters to query: <b>' . $mysqli->error . '</b>');
 		}
 	}
 	
