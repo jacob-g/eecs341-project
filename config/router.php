@@ -36,6 +36,11 @@ $page_routes = array(
 		'content'	=> 'view_topic.html',
 		'behavior'	=> 'view_topic.php'
 	),
+	'/forums/admin/permissions/$forum_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'forum_permissions.html',
+		'behavior'	=> 'forum_permissions.php'
+	),
 	'/about/' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'about.html',

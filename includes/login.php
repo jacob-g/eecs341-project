@@ -39,3 +39,11 @@ if (!$logged_in) {
 		'group'		=> GUEST_USER_GROUP
 	);
 }
+
+//get all user group permissions (we use SELECT * in case more are added in the future)
+$statement = query('SELECT * FROM groups WHERE ID=?', 'i', array($user_info['group']));
+bind_result_array($statement, $user_info['permissions']);
+$statement->fetch();
+$statement->close();
+
+//$user_info['permissions'] = $group_permissions;

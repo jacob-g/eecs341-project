@@ -32,3 +32,15 @@ function query($query, $param_types = '', $params = array()) {
 	
 	return $statement;
 }
+
+//populate an associative array with the results of a SELECT * (or any other SELECT) query
+function bind_result_array($statement, &$result) {
+	$meta = $statement->result_metadata();
+	$result = array();
+	$params = array();
+	while ($field = $meta->fetch_field()) {
+		$params[] = &$result[$field->name];
+	}
+	
+	call_user_func_array(array($statement, 'bind_result'), $params); 
+}

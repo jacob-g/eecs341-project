@@ -1,0 +1,27 @@
+<tr>
+	<td><$(group_name)/></td>
+	<td style="background-color: #DDF" align="center" valign="center">
+		<input class="form-check-input" type="checkbox" name="permissions[<$(group_id)/>][inherit]" value="1" id="inherit-<$(group_id)/>"<$(inherit_checked)/> />
+		<label class="form-check-label" for="inherit-<$(group_id)/>">
+			Auto-Inherit
+		</label>
+	</td>
+	<td style="background-color: #DDF" align="center" valign="center">
+		<input class="form-check-input" type="checkbox" name="permissions[<$(group_id)/>][view_forum]" value="1" id="view-<$(group_id)/>"<$(view_forum_checked)/> />
+		<label class="form-check-label" for="view-<$(group_id)/>">
+			View Forum
+		</label>
+	</td>
+	<td style="background-color: #DDF" align="center" valign="center">
+		<input class="form-check-input" type="checkbox" name="permissions[<$(group_id)/>][post_topics]" value="1" id="topics-<$(group_id)/>" <$(post_topics_checked)/> <$(guest_disable)/> />
+		<label class="form-check-label" for="topics-<$(group_id)/>">
+			Post Topics
+		</label>
+	</td>
+	<td style="background-color: #DDF" align="center" valign="center">
+		<input class="form-check-input" type="checkbox" name="permissions[<$(group_id)/>][post_replies]" value="1" id="replies-<$(group_id)/>" <$(post_replies_checked)/> <$(guest_disable)/> />
+		<label class="form-check-label" for="replies-<$(group_id)/>">
+			Post Replies
+		</label>
+	</td>
+</tr>

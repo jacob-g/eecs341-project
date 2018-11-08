@@ -1,0 +1,18 @@
+<form action="/forums/admin/permissions/<$(forum_id)/>" method="post" enctype="multipart/form-data">
+	<h2>Edit forum permissions for "<$(forum_name)/>"</h2>
+	<table class="table table-bordered theme_color">
+		<thead>
+			<tr style="background-color: #AAF">
+				<th scope="col" width="40%">Group Name</th>
+				<th scope="col" width="15%">Auto-Inherit</th>
+				<th scope="col" width="15%">View Forum</th>
+				<th scope="col" width="15%">Post Topics</th>
+				<th scope="col" width="15%">Post Replies</th>
+			</tr>
+		</thead>
+		<tbody>
+			<$(permission_rows)/>
+		</tbody>
+	</table>
+	<p><input type="submit" class="btn btn-primary" name="form_sent" value="Update Permissions" /></p>
+</form>
