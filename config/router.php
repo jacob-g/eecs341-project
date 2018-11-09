@@ -21,6 +21,11 @@ $page_routes = array(
 		'content'	=> 'forum_index.html',
 		'behavior'	=> 'forum_index.php'
 	),
+	'/forums/delete/$post_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'delete_post.html',
+		'behavior'	=> 'delete_post.php'
+	),
 	'/forums/forum/$forum_id' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'view_forum.html',

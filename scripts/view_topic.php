@@ -30,14 +30,33 @@ if ($can_post_reply && isset($_POST['post_reply'])) {
 }
 
 //get all of the posts associated with this topic and show them
-$statement = query('SELECT p.description,u.name,p.posted,u.registered FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID WHERE p.topic_ID=? ORDER BY posted ASC', 'i', array($topic_id));
-$statement->bind_result($message, $author_username, $post_time, $author_registered);
+$statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID WHERE p.topic_ID=? ORDER BY posted ASC', 'i', array($topic_id));
+$statement->bind_result($post_id, $message, $author_username, $author_id, $post_time, $author_registered);
 $post_rows = new MultiPageElement();
 while ($statement->fetch()) {
 	$post_row = new PageElement('post_row.html');
 	$post_row->bind('post_message', htmlspecialchars($message));
 	$post_row->bind('author_username', htmlspecialchars($author_username));
 	$post_row->bind('author_registered', htmlspecialchars($author_registered));
+	
+	//generate the actions that can be taken on this post (edit/delete)
+	$post_actions = array();
+	if (($author_id == $user_info['id'] && $user_info['permissions']['edit_own_posts']) || $user_info['permissions']['edit_other_posts']) {
+		$edit_link = new PageElement('edit_post_link.html');
+		$edit_link->bind('post_id', $post_id);
+		$post_actions[] = $edit_link->render();
+	}
+	if (($author_id == $user_info['id'] && $user_info['permissions']['delete_own_posts']) || $user_info['permissions']['delete_other_posts']) {
+		$delete_link = new PageElement('delete_post_link.html');
+		$delete_link->bind('post_id', $post_id);
+		$post_actions[] = $delete_link->render();
+	}
+	if (empty($post_actions)) {
+		$post_row->bind('post_actions', ''); //no actions, so leave the list blank
+	} else {
+		$post_row->bind('post_actions', '<ul class="post_actions"><li>' . implode('</li><li>', $post_actions) . '</li></ul>'); //add the list	
+	}
+	
 	$post_rows->addElement($post_row);
 }
 $statement->close();

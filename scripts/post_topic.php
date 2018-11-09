@@ -29,12 +29,16 @@ if (isset($_POST['form_sent'])) {
 	
 	if (empty($errors)) {
 		$mysqli->begin_transaction();
+		//make the topic
 		query('INSERT INTO topic(forum_ID,name) VALUES(?,?)', 'is', array($forum_id, $_POST['subject']))->close();
+		//get the topic's ID
 		$statement = query('SELECT LAST_INSERT_ID()');
 		$statement->bind_result($topic_id);
 		$statement->fetch();
 		$statement->close();
+		//make the first post
 		query('INSERT INTO post(topic_ID,name,description,poster_ID) VALUES(LAST_INSERT_ID(),\'\',?,?)', 'si', array($_POST['message'], $user_info['id']))->close();
+		query('UPDATE topic SET first_post_ID=LAST_INSERT_ID() WHERE ID=?', 'i', array($topic_id)); //mark the first post ID for the topic
 		$mysqli->commit();
 		
 		redirect('/forums/forum/' . $forum_id . '/topic/' . $topic_id);

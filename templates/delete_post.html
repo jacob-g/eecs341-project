@@ -1,0 +1,7 @@
+<form action="/forums/delete/<$(post_id)/>" method="post" enctype="multipart/form-data">
+	<h2>Delete Post</h2>
+	<p>Are you sure you want to delete the following post?</p>
+	<$(delete_topic_warning)/>
+	<p style="border: 1px solid #000"><$(post_message)/></p>
+	<p><input type="submit" name="delete_confirm" value="Yes" class="btn btn-danger" /> <input type="submit" name="delete_cancel" value="No" class="btn btn-secondary" /></p>
+</form>
