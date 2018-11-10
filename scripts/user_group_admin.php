@@ -10,6 +10,24 @@ if (!$user_info['permissions']['access_admin_panel']) {
 
 $page_params['notice'] = '';
 
+if (isset($_POST['add_group'])) { //add a new group
+	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+	$statement = query('SELECT 1 FROM groups WHERE name=?', 's', array($_POST['group_name'])); //make sure the group doesn't already exist
+	$group_exists = $statement->fetch();
+	$statement->close();
+	if ($group_exists) {
+		$group_exists_warning = new PageElement('basicwarning.html');
+		$group_exists_warning->bind('text', 'Group name already in use: <b>' . htmlspecialchars($_POST['group_name']) . '</b>');
+		$page_params['notice'] = $group_exists_warning->render();
+	} else {
+		query('INSERT INTO groups(name,user_title) VALUES(?,?)', 'ss', array($_POST['group_name'], $_POST['user_title']))->close();
+		$group_exists_warning = new PageElement('basicnotice.html');
+		$group_exists_warning->bind('text', 'Group <b>' . htmlspecialchars($_POST['group_name']) . '</b> created successfully! Set the permissions below.');
+		$page_params['notice'] = $group_exists_warning->render();
+	}
+	$mysqli->commit();
+}
+
 if (isset($_POST['form_sent'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 	$group_ids = array();

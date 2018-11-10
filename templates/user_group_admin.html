@@ -29,6 +29,31 @@
 </form>
 
 <form action="/forums/admin/groups/" method="post" enctype="multipart/form-data">
+	<h3>Add new group</h3>
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th width="20%">
+					Group Name
+				</th>
+				<td>
+					<input type="text" name="group_name" />
+				</td>
+			</tr>
+			<tr>
+				<th width="20%">
+					User Title
+				</th>
+				<td>
+					<input type="text" name="user_title" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p><input type="submit" class="btn btn-primary" name="add_group" value="Add new group" /></p>
+</form>
+
+<form action="/forums/admin/groups/" method="post" enctype="multipart/form-data">
 	<h3>Group permissions</h3>
 	<table class="table table-striped table-bordered">
 		<thead>
