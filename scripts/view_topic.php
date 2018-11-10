@@ -30,14 +30,15 @@ if ($can_post_reply && isset($_POST['post_reply'])) {
 }
 
 //get all of the posts associated with this topic and show them
-$statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID WHERE p.topic_ID=? ORDER BY posted ASC', 'i', array($topic_id));
-$statement->bind_result($post_id, $message, $author_username, $author_id, $post_time, $author_registered);
+$statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered,g.user_title FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID LEFT JOIN groups AS g ON g.ID=u.group_ID WHERE p.topic_ID=? ORDER BY posted ASC', 'i', array($topic_id));
+$statement->bind_result($post_id, $message, $author_username, $author_id, $post_time, $author_registered, $author_title);
 $post_rows = new MultiPageElement();
 while ($statement->fetch()) {
 	$post_row = new PageElement('post_row.html');
 	$post_row->bind('post_message', htmlspecialchars($message));
 	$post_row->bind('author_username', htmlspecialchars($author_username));
 	$post_row->bind('author_registered', htmlspecialchars($author_registered));
+	$post_row->bind('author_title', htmlspecialchars($author_title));
 	
 	//generate the actions that can be taken on this post (edit/delete)
 	$post_actions = array();
