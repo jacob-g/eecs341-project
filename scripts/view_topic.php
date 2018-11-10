@@ -40,6 +40,7 @@ while ($statement->fetch()) {
 	$post_row->bind('author_username', htmlspecialchars($author_username));
 	$post_row->bind('author_registered', htmlspecialchars($author_registered));
 	$post_row->bind('author_title', htmlspecialchars($author_title));
+	$post_row->bind('post_time', $post_time);
 	
 	//generate the actions that can be taken on this post (edit/delete)
 	$post_actions = array();
