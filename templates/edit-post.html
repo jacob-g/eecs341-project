@@ -1,14 +1,15 @@
 <h2>Edit Post</h2>
 <br />
 
-<h4 class="h5">Re: <$(topic_name)/></h4>
-<br />
-
-<textarea required="required" class="form-control" rows="10" cols="100"><$(post_content)/></textarea>
-
-<br /><br />
-<div align="center">
-	<button class="btn btn-primary">Submit Changes</button>&nbsp;&nbsp;
-	<button class="btn btn-danger">Discard</button>
-</div>
-
+<form action="/forums/edit/<$(post_id)/>" method="post" enctype="multipart/form-data">
+	<$(subject_line)/>
+	<br />
+	
+	<textarea required="required" class="form-control" rows="10" cols="100" name="message"><$(post_content)/></textarea>
+	
+	<br /><br />
+	<div align="center">
+		<input class="btn btn-primary" name="submit_edit" type="submit" value="Submit Changes" />&nbsp;&nbsp;
+		<input class="btn btn-danger" name="cancel_edit" type="submit" value="Discard" />
+	</div>
+</form>
