@@ -1,5 +1,8 @@
 <tr align="center">
-	<th scope="row"><$(group_name)/></th>
+	<th scope="row">
+		<b>Name:</b><br /><input type="text" name="groups[<$(group_id)/>][name]" value="<$(group_name)/>" /><br />
+		<b>User title:</b><br /><input type="text" name="groups[<$(group_id)/>][user_title]" value="<$(group_user_title)/>" />
+	</th>
 	<td><input type="checkbox" name="groups[<$(group_id)/>][view_forums]" id="view_forums_<$(group_id)/>" <$(view_forums_checked)/> /> <label for="view_forums_<$(group_id)/>">View Forums</label></td>
 	<td><input type="checkbox" name="groups[<$(group_id)/>][post_topics]" id="post_topics_<$(group_id)/>" <$(post_topics_checked)/> <$(guest_disable)/> /> <label for="post_topics_<$(group_id)/>">Post Topics</label></td>
 	<td><input type="checkbox" name="groups[<$(group_id)/>][post_replies]" id="post_replies_<$(group_id)/>" <$(post_replies_checked)/> <$(guest_disable)/> /> <label for="post_replies_<$(group_id)/>">Post Replies</label></td>

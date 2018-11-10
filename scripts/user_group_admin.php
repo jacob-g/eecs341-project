@@ -21,6 +21,8 @@ if (isset($_POST['form_sent'])) {
 	$statement->close();
 	foreach ($group_ids as $group_id) {
 		query('UPDATE groups SET
+			name=?,
+			user_title=?,
 			view_forums=?,
 			post_topics=?,
 			post_replies=?,
@@ -29,7 +31,9 @@ if (isset($_POST['form_sent'])) {
 			delete_own_posts=?,
 			delete_other_posts=?,
 			access_admin_panel=?
-			WHERE ID=?', 'iiiiiiiii', array(
+			WHERE ID=?', 'ssiiiiiiiii', array(
+					$_POST['groups'][$group_id]['name'],
+					$_POST['groups'][$group_id]['user_title'],
 					isset($_POST['groups'][$group_id]['view_forums']),
 					isset($_POST['groups'][$group_id]['post_topics']),
 					isset($_POST['groups'][$group_id]['post_replies']),
@@ -89,12 +93,13 @@ $group_rows = new MultiPageElement();
 $group_dropdown_options = new MultiPageElement();
 
 //get the full list of all the groups and its permissions
-$statement = query('SELECT ID,name,view_forums,post_topics,post_replies,edit_own_posts,edit_other_posts,delete_own_posts,delete_other_posts,access_admin_panel FROM groups ORDER BY ID ASC');
-$statement->bind_result($group_id, $group_name, $view_forums, $post_topics, $post_replies, $edit_own_posts, $edit_other_posts, $delete_own_posts, $delete_other_posts, $access_admin_panel);
+$statement = query('SELECT ID,name,user_title,view_forums,post_topics,post_replies,edit_own_posts,edit_other_posts,delete_own_posts,delete_other_posts,access_admin_panel FROM groups ORDER BY ID ASC');
+$statement->bind_result($group_id, $group_name, $user_title, $view_forums, $post_topics, $post_replies, $edit_own_posts, $edit_other_posts, $delete_own_posts, $delete_other_posts, $access_admin_panel);
 while ($statement->fetch()) {
 	//add the row to the table containing the group and its permission checkboxes
 	$group_row = new PageElement('user_group_admin_row.html');
 	$group_row->bind('group_name', htmlspecialchars($group_name));
+	$group_row->bind('group_user_title', htmlspecialchars($user_title));
 	$group_row->bind('group_id', $group_id);
 	$group_row->bind('guest_disable', $group_id == GUEST_USER_GROUP ? 'disabled="disabled"' : '');
 	$group_row->bind('view_forums_checked', $view_forums && $group_id != GUEST_USER_GROUP ? 'checked="checked"' : '');
