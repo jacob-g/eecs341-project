@@ -34,6 +34,7 @@ $statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered,
 $statement->bind_result($post_id, $message, $author_username, $author_id, $post_time, $author_registered, $author_title);
 $post_rows = new MultiPageElement();
 while ($statement->fetch()) {
+	//create a row for each post
 	$post_row = new PageElement('post_row.html');
 	$post_row->bind('post_message', htmlspecialchars($message));
 	$post_row->bind('author_username', htmlspecialchars($author_username));
@@ -42,11 +43,13 @@ while ($statement->fetch()) {
 	
 	//generate the actions that can be taken on this post (edit/delete)
 	$post_actions = array();
+	//see if the user can edit the post (either they have permission to edit ALL posts or they have permission to edit their own posts and this is their own post)
 	if (($author_id == $user_info['id'] && $user_info['permissions']['edit_own_posts']) || $user_info['permissions']['edit_other_posts']) {
 		$edit_link = new PageElement('edit_post_link.html');
 		$edit_link->bind('post_id', $post_id);
 		$post_actions[] = $edit_link->render();
 	}
+	//see if the user has permission to delete the post (same way as checking editing posts)
 	if (($author_id == $user_info['id'] && $user_info['permissions']['delete_own_posts']) || $user_info['permissions']['delete_other_posts']) {
 		$delete_link = new PageElement('delete_post_link.html');
 		$delete_link->bind('post_id', $post_id);
@@ -62,6 +65,10 @@ while ($statement->fetch()) {
 }
 $statement->close();
 $page_params['post_rows'] = $post_rows->render();
+
+$topic_header = new PageElement('topic_header.html');
+$topic_header->bind('topic_subject', htmlspecialchars($topic_name));
+$page_params['above_page_text'] = $topic_header->render();
 
 //if the user has permission to post a reply, show the reply box
 if ($can_post_reply) {
