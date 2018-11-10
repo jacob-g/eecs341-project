@@ -1,6 +1,35 @@
 <h2>User Group Management</h2>
 
+<$(notice)/>
 <form action="/forums/admin/groups/" method="post" enctype="multipart/form-data">
+	<h3>Add user to group</h3>
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th width="20%">
+					Username
+				</th>
+				<td>
+					<input type="text" name="username" />
+				</td>
+			</tr>
+			<tr>
+				<th width="20%">
+					Group
+				</th>
+				<td>
+					<select name="group">
+						<$(group_dropdown_items)/>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p><input type="submit" name="update_user" value="Add" class="btn btn-primary" /></p>
+</form>
+
+<form action="/forums/admin/groups/" method="post" enctype="multipart/form-data">
+	<h3>Group permissions</h3>
 	<table class="table table-striped table-bordered">
 		<thead>
 			<tr style="background-color: #AAF">
