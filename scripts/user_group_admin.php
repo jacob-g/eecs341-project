@@ -10,24 +10,43 @@ if (!$user_info['permissions']['access_admin_panel']) {
 
 $page_params['notice'] = '';
 
-if (isset($_POST['add_group'])) { //add a new group
+//we're adding a user to a group
+if (isset($_POST['update_user'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-	$statement = query('SELECT 1 FROM groups WHERE name=?', 's', array($_POST['group_name'])); //make sure the group doesn't already exist
-	$group_exists = $statement->fetch();
+	$new_group_id = intval($_POST['group']);
+	$username = $_POST['username'];
+	
+	//make sure the group really exists
+	$statement = query('SELECT name FROM groups WHERE ID=?', 'i', array($new_group_id));
+	$statement->bind_result($new_group_name);
+	$valid_user_group = $statement->fetch() && $new_group_id != GUEST_USER_GROUP;
 	$statement->close();
-	if ($group_exists) {
-		$group_exists_warning = new PageElement('basicwarning.html');
-		$group_exists_warning->bind('text', 'Group name already in use: <b>' . htmlspecialchars($_POST['group_name']) . '</b>');
-		$page_params['notice'] = $group_exists_warning->render();
+	
+	//make sure the user exists too
+	$statement = query('SELECT ID FROM users WHERE name=?', 's', array($username));
+	$statement->bind_result($user_id);
+	$valid_username = $statement->fetch();
+	$statement->close();
+	
+	//show errors if there are any, and if there aren't, update the group
+	if (!$valid_user_group) {
+		$invalid_group_warning = new PageElement('basicwarning.html');
+		$invalid_group_warning->bind('text', 'The group you specified is invalid.');
+		$page_params['notice'] = $invalid_group_warning->render();
+	} else if (!$valid_username) {
+		$invalid_username_warning = new PageElement('basicwarning.html');
+		$invalid_username_warning->bind('text', 'The username you specified is invalid.');
+		$page_params['notice'] = $invalid_username_warning->render();
 	} else {
-		query('INSERT INTO groups(name,user_title) VALUES(?,?)', 'ss', array($_POST['group_name'], $_POST['user_title']))->close();
-		$group_exists_warning = new PageElement('basicnotice.html');
-		$group_exists_warning->bind('text', 'Group <b>' . htmlspecialchars($_POST['group_name']) . '</b> created successfully! Set the permissions below.');
-		$page_params['notice'] = $group_exists_warning->render();
+		query('UPDATE users SET group_ID=? WHERE ID=?', 'ii', array($new_group_id, $user_id));
+		$updated_user_notice = new PageElement('basicnotice.html');
+		$updated_user_notice->bind('text', 'User group successfully updated: <b>' . htmlspecialchars($username) . '</b> is now a member of <b>' . htmlspecialchars($new_group_name) . '</b>.');
+		$page_params['notice'] = $updated_user_notice->render();
 	}
 	$mysqli->commit();
 }
 
+//we're updating the permissions for a group
 if (isset($_POST['form_sent'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 	$group_ids = array();
@@ -71,38 +90,64 @@ if (isset($_POST['form_sent'])) {
 	$page_params['notice'] = $updated_group_notice->render();
 }
 
-//we're adding a user to a group
-if (isset($_POST['update_user'])) {
+if (isset($_POST['delete_group'])) { //delete a group
+	$group_to_delete = intval($_POST['group_to_delete']);
+	$group_to_reassign = intval($_POST['group_to_reassign']);
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-	$new_group_id = intval($_POST['group']);
-	$username = $_POST['username'];
 	
-	//make sure the group really exists
-	$statement = query('SELECT name FROM groups WHERE ID=?', 'i', array($new_group_id));
-	$statement->bind_result($new_group_name);
-	$valid_user_group = $statement->fetch() && $new_group_id != GUEST_USER_GROUP;
+	$statement = query('SELECT 1 FROM groups WHERE id=?', 'i', array($group_to_delete)); //make sure the group we're deleting exists
+	$group_to_delete_exists = $statement->fetch();
 	$statement->close();
 	
-	//make sure the user exists too
-	$statement = query('SELECT ID FROM users WHERE name=?', 's', array($username));
-	$statement->bind_result($user_id);
-	$valid_username = $statement->fetch();
+	$statement = query('SELECT 1 FROM groups WHERE id=?', 'i', array($group_to_reassign)); //make sure the group we're reassigning to exists
+	$group_to_reassign_exists = $statement->fetch();
 	$statement->close();
 	
-	//show errors if there are any, and if there aren't, update the group
-	if (!$valid_user_group) {
-		$invalid_group_warning = new PageElement('basicwarning.html');
-		$invalid_group_warning->bind('text', 'The group you specified is invalid.');
-		$page_params['notice'] = $invalid_group_warning->render();
-	} else if (!$valid_username) {
-		$invalid_username_warning = new PageElement('basicwarning.html');
-		$invalid_username_warning->bind('text', 'The username you specified is invalid.');
-		$page_params['notice'] = $invalid_username_warning->render();
+	//either show an error message or delete the group and reassign its members
+	if (!$group_to_delete_exists) {
+		$group_doesnt_exist_warning = new PageElement('basicwarning.html');
+		$group_doesnt_exist_warning->bind('text', 'The group you asked to delete does not exist.');
+		$page_params['notice'] = $group_doesnt_exist_warning->render();
+	} else if (!$group_to_reassign_exists) {
+		$bad_reassign_warning = new PageElement('basicwarning.html');
+		$bad_reassign_warning->bind('text', 'The group you asked to reassign users to does not exist.');
+		$page_params['notice'] = $bad_reassign_warning->render();
+	} else if ($group_to_delete == $group_to_reassign) {
+		$cannot_reassign_warning = new PageElement('basicwarning.html');
+		$cannot_reassign_warning->bind('text', 'You cannot reassign users to the group you are deleting.');
+		$page_params['notice'] = $cannot_reassign_warning->render();
+	} else if ($group_to_delete == $user_info['group']) {
+		$cannot_delete_yourself_warning = new PageElement('basicwarning.html');
+		$cannot_delete_yourself_warning->bind('text', 'You cannot delete the group you are currently in.');
+		$page_params['notice'] = $cannot_delete_yourself_warning->render();
 	} else {
-		query('UPDATE users SET group_ID=? WHERE ID=?', 'ii', array($new_group_id, $user_id));
-		$updated_user_notice = new PageElement('basicnotice.html');
-		$updated_user_notice->bind('text', 'User group successfully updated: <b>' . htmlspecialchars($username) . '</b> is now a member of <b>' . htmlspecialchars($new_group_name) . '</b>.');
-		$page_params['notice'] = $updated_user_notice->render();
+		query('UPDATE users SET group_ID=? WHERE group_ID=?', 'ii', array($group_to_reassign, $group_to_delete))->close(); //delete the group
+		query('DELETE FROM groups WHERE ID=?', 'i', array($group_to_delete))->close(); //reassign its members
+		$delete_successful_warning = new PageElement('basicnotice.html');
+		$delete_successful_warning->bind('text', 'Group successfully deleted!');
+		$page_params['notice'] = $delete_successful_warning->render();
+	}
+	$mysqli->commit();
+}
+
+if (isset($_POST['add_group'])) { //add a new group
+	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+	
+	//make sure the group doesn't already exist (i.e. the same title)
+	$statement = query('SELECT 1 FROM groups WHERE name=?', 's', array($_POST['group_name'])); //make sure the group doesn't already exist
+	$group_exists = $statement->fetch();
+	$statement->close();
+	
+	//show a warning message or create the group
+	if ($group_exists) {
+		$group_exists_warning = new PageElement('basicwarning.html');
+		$group_exists_warning->bind('text', 'Group name already in use: <b>' . htmlspecialchars($_POST['group_name']) . '</b>');
+		$page_params['notice'] = $group_exists_warning->render();
+	} else {
+		query('INSERT INTO groups(name,user_title) VALUES(?,?)', 'ss', array($_POST['group_name'], $_POST['user_title']))->close();
+		$group_exists_warning = new PageElement('basicnotice.html');
+		$group_exists_warning->bind('text', 'Group <b>' . htmlspecialchars($_POST['group_name']) . '</b> created successfully! Set the permissions below.');
+		$page_params['notice'] = $group_exists_warning->render();
 	}
 	$mysqli->commit();
 }

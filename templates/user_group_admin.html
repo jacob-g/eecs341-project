@@ -2,7 +2,7 @@
 
 <$(notice)/>
 <form action="/forums/admin/groups/" method="post" enctype="multipart/form-data">
-	<h3>Add user to group</h3>
+	<h3>Assign user to group</h3>
 	<table class="table table-bordered">
 		<tbody>
 			<tr>
@@ -25,16 +25,45 @@
 			</tr>
 		</tbody>
 	</table>
-	<p><input type="submit" name="update_user" value="Add" class="btn btn-primary" /></p>
+	<p><input type="submit" name="update_user" value="Assign user" class="btn btn-primary" /></p>
 </form>
 
 <form action="/forums/admin/groups/" method="post" enctype="multipart/form-data">
-	<h3>Add new group</h3>
+	<h3>Delete Group</h3>
 	<table class="table table-bordered">
 		<tbody>
 			<tr>
 				<th width="20%">
-					Group Name
+					Delete group
+				</th>
+				<td>
+					<select name="group_to_delete">
+						<$(group_dropdown_items)/>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th width="20%">
+					Reassign members to
+				</th>
+				<td>
+					<select name="group_to_reassign">
+						<$(group_dropdown_items)/>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<p><input type="submit" class="btn btn-danger" name="delete_group" value="Delete Group" /></p>
+</form>
+
+<form action="/forums/admin/groups/" method="post" enctype="multipart/form-data">
+	<h3>Add New Group</h3>
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th width="20%">
+					Group Title
 				</th>
 				<td>
 					<input type="text" name="group_name" />
