@@ -98,6 +98,7 @@ $category_tables = new MultiPageElement();
 $last_category_id = -1;
 $last_category_row = null;
 $forum_rows = null;
+//TODO: do some sort of outer join so that empty categories show up too
 $statement = query('SELECT c.ID AS cid,c.name AS category_name,f.ID AS fid,f.name AS forum_name,c.sort_order AS cat_sort_order,f.sort_order AS f_sort_order FROM forum AS f LEFT JOIN category AS c ON c.ID=f.category_ID ORDER BY c.sort_order,f.sort_order ASC');
 $statement->bind_result($category_id, $category_name, $forum_id, $forum_name, $category_sort_order, $forum_sort_order);
 while ($statement->fetch()) {

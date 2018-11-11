@@ -1,0 +1,4 @@
+<form action="/forums/admin/delete_category/<$(category_id)/>" method="post" enctype="multipart/form-data">
+	<p>Are you sure you want to delete the category <b><$(category_name)/></b>? This will also delete all forums within it and all of their constituent topics and replies.</p>
+	<p><input type="submit" class="btn btn-danger" name="form_sent" value="Delete" /> <input type="submit" class="btn btn-primary" name="cancel" value="Cancel" /></p>
+</form>

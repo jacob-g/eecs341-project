@@ -61,6 +61,16 @@ $page_routes = array(
 		'content'	=> 'forum_permissions.html',
 		'behavior'	=> 'forum_permissions.php'
 	),
+	'/forums/admin/delete_forum/$forum_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'delete_forum.html',
+		'behavior'	=> 'delete_forum.php'
+	),
+	'/forums/admin/delete_category/$category_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'delete_category.html',
+		'behavior'	=> 'delete_category.php'
+	),
 	'/about/' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'about.html',

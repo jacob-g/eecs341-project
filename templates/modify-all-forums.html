@@ -4,42 +4,31 @@
 
 <h3>Actions</h3>
 <form action="/forums/admin/manage_forums/" method="post" enctype="multipart/form-data">
-<h4>Add New Category</h4>
-<table class="table table-bordered theme_color">
-	<tbody>
-		<tr>
-			<th>Name</th>
-			<td><input type="text" name="new_category_name" size="40" /></td>
-		</tr>
-	</tbody>
-</table>
-<p><input type="submit" name="add_category" class="btn btn-primary" value="Add New Category" /></p>
-
-<h4>Add Forum to Category</h4>
-<table class="table table-bordered theme_color">
-	<tbody>
-		<tr>
-			<th>Name</th>
-			<td><input type="text" name="new_forum_name" size="40" /></td>
-		</tr>
-		<tr>
-			<th>Category</th>
-			<td><select name="category_to_add_to"><$(category_select_options)/></select></td>
-		</tr>
-	</tbody>
-</table>
-<p><input type="submit" name="add_forum" value="Add Forum" class="btn btn-primary" /></p>
-
-<h4>Delete Category</h4>
-<table class="table table-bordered theme_color">
-	<tbody>
-		<tr>
-			<th>Category</th>
-			<td><select name="category_to_delete"><$(category_select_options)/></select></td>
-		</tr>
-	</tbody>
-</table>
-<p><input type="submit" name="delete_category" value="Go" class="btn btn-danger" /></p>
+	<h4>Add New Category</h4>
+	<table class="table table-bordered theme_color">
+		<tbody>
+			<tr>
+				<th>Name</th>
+				<td><input type="text" name="new_category_name" size="40" /></td>
+			</tr>
+		</tbody>
+	</table>
+	<p><input type="submit" name="add_category" class="btn btn-primary" value="Add New Category" /></p>
+	
+	<h4>Add Forum to Category</h4>
+	<table class="table table-bordered theme_color">
+		<tbody>
+			<tr>
+				<th>Name</th>
+				<td><input type="text" name="new_forum_name" size="40" /></td>
+			</tr>
+			<tr>
+				<th>Category</th>
+				<td><select name="category_to_add_to"><$(category_select_options)/></select></td>
+			</tr>
+		</tbody>
+	</table>
+	<p><input type="submit" name="add_forum" value="Add Forum" class="btn btn-primary" /></p>
 </form>
 
 <h3>Edit Forums</h3>
