@@ -8,24 +8,6 @@ if (!$user_info['permissions']['access_admin_panel']) {
 	die;
 }
 
-//get a list of existing categories
-$categories = array();
-$statement = query('SELECT ID,name FROM category ORDER BY sort_order ASC');
-$statement->bind_result($category_id, $name);
-while ($statement->fetch()) {
-	$categories[$category_id] = $name;
-}
-$statement->close();
-
-$category_select_options = new MultiPageElement();
-foreach ($categories as $category_id => $category_name) {
-	$category_select_option = new PageElement('category_dropdown_item.html');
-	$category_select_option->bind('category_id', $category_id);
-	$category_select_option->bind('category_name', htmlspecialchars($category_name));
-	$category_select_options->addElement($category_select_option);
-}
-$page_params['category_select_options'] = $category_select_options->render();
-
 if (isset($_POST['add_category'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 	$statement = query('SELECT MAX(sort_order)+1 FROM category');
@@ -93,6 +75,24 @@ if (isset($_POST['form_sent'])) {
 	}
 	$mysqli->commit();
 }
+
+//get a list of existing categories
+$categories = array();
+$statement = query('SELECT ID,name FROM category ORDER BY sort_order ASC');
+$statement->bind_result($category_id, $name);
+while ($statement->fetch()) {
+	$categories[$category_id] = $name;
+}
+$statement->close();
+
+$category_select_options = new MultiPageElement();
+foreach ($categories as $category_id => $category_name) {
+	$category_select_option = new PageElement('category_dropdown_item.html');
+	$category_select_option->bind('category_id', $category_id);
+	$category_select_option->bind('category_name', htmlspecialchars($category_name));
+	$category_select_options->addElement($category_select_option);
+}
+$page_params['category_select_options'] = $category_select_options->render();
 
 $category_tables = new MultiPageElement();
 $last_category_id = -1;
