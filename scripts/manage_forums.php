@@ -24,7 +24,7 @@ if (isset($_POST['form_sent'])) {
 	foreach ($category_ids as $category_id) {
 		if (isset($_POST['categories']) &&
 			isset($_POST['categories'][$category_id])) {
-			query('UPDATE category SET name=? WHERE ID=?', 'si', array($_POST['categories'][$category_id]['name'], $category_id));
+			query('UPDATE category SET name=?,sort_order=? WHERE ID=?', 'sii', array($_POST['categories'][$category_id]['name'], $_POST['categories'][$category_id]['sort_order'], $category_id));
 		}
 	}
 	
@@ -63,6 +63,7 @@ while ($statement->fetch()) {
 		$last_category_row = new PageElement('manage_forums_category_table.html');
 		$last_category_row->bind('category_name', htmlspecialchars($category_name));
 		$last_category_row->bind('category_id', $category_id);
+		$last_category_row->bind('sort_order', $category_sort_order);
 		$forum_rows = new MultiPageElement();
 	}
 	$forum_row = new PageElement('manage_forums_forum_row.html');
