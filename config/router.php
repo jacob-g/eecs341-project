@@ -51,6 +51,11 @@ $page_routes = array(
 		'content'	=> 'user_group_admin.html',
 		'behavior'	=> 'user_group_admin.php'
 	),
+	'/forums/admin/manage_forums/' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'modify-all-forums.html',
+		'behavior'	=> 'manage_forums.php'
+	),
 	'/forums/admin/permissions/$forum_id' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'forum_permissions.html',

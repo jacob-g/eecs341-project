@@ -1,66 +1,7 @@
 <h2>List of All Forums</h2>
 
 <p>Click on the name of the existing posts under the category to make changes to the forum. </p>
-<table class="table table-bordered theme_color">
-	<thead>
-		<tr style="background-color: #AAF">
-			<th scope="col" width="10%">Edit</th>
-			<th scope="col" width="50%">EamonBB</th>
-			<th scope="col" width="100px">Topics</th>
-			<th scope="col" width="100px">Posts</th>
-			<th scope="col" width="100px">Popularity</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>
-				<button class="btn"><i class="fas fa-trash-alt"></i></button>
-				<button class="btn"><i class="fas fa-pen"></i></button>
-			</td>
-			<td><i class="far fa-check-circle"></i>&nbsp;<a href="">Announcements</a></td>
-			<td style="background-color: #DDF" align="center" valign="center">1</td>
-			<td style="background-color: #DDF" align="center" valign="center">3</td>
-			<td style="background-color: #DDF" align="center" valign="center"><$(popularity)/></td>
-		</tr>
-		<tr>
-			<td>
-				<button class="btn"><i class="fas fa-trash-alt"></i></button>
-				<button class="btn"><i class="fas fa-pen"></i></button>
-			</td>
-			<td><i class="far fa-check-circle"></i>&nbsp;<a href="">Updates</a></td>
-			<td style="background-color: #DDF" align="center" valign="center">1</td>
-			<td style="background-color: #DDF" align="center" valign="center">1</td>
-			<td style="background-color: #DDF" align="center" valign="center"><$(popularity)/></td>
-		</tr>
-		<tr>
-			<td>
-				<button class="btn"><i class="fas fa-trash-alt"></i></button>
-				<button class="btn"><i class="fas fa-pen"></i></button>
-			</td>
-			<td><i class="far fa-check-circle"></i>&nbsp;<a href="">Database class news</a></td>
-			<td style="background-color: #DDF" align="center" valign="center">1</td>
-			<td style="background-color: #DDF" align="center" valign="center">1</td>
-			<td style="background-color: #DDF" align="center" valign="center"><$(popularity)/></td>
-		</tr>
-		<tr>
-			<td>
-				<button class="btn"><i class="fas fa-trash-alt"></i></button>
-				<button class="btn"><i class="fas fa-pen"></i></button>
-			</td>
-			<td><i class="far fa-check-circle"></i>&nbsp;<a href="">Compliments</a></td>
-			<td style="background-color: #DDF" align="center" valign="center">1</td>
-			<td style="background-color: #DDF" align="center" valign="center">2</td>
-			<td style="background-color: #DDF" align="center" valign="center"><$(popularity)/></td>
-		</tr>
-		<tr>
-			<td>
-				<button class="btn"><i class="fas fa-trash-alt"></i></button>
-				<button class="btn"><i class="fas fa-pen"></i></button>
-			</td>
-			<td><i class="far fa-check-circle"></i>&nbsp;<a href="">Bugs and Glitches</a></td>
-			<td style="background-color: #DDF" align="center" valign="center">1</td>
-			<td style="background-color: #DDF" align="center" valign="center">36</td>
-			<td style="background-color: #DDF" align="center" valign="center"><$(popularity)/></td>
-		</tr>
-	</tbody>
-</table>
+<form action="/forums/admin/manage_forums/" method="post" enctype="multipart/form-data">
+	<$(category_tables)/>
+	<p><input type="submit" name="form_sent" class="btn btn-primary" value="Update" /></p>
+</form>

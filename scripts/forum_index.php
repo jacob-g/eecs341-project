@@ -8,7 +8,8 @@ $statement = query('
 		(forum AS f LEFT JOIN category AS c ON c.ID=f.category_ID LEFT JOIN topic AS t ON t.forum_ID=f.ID LEFT JOIN post AS p ON p.topic_ID=t.ID
 		LEFT JOIN forum_group_permissions AS fgp ON fgp.forum_ID=f.ID AND fgp.group_ID=?)
 	WHERE fgp.view_forum=1 OR (fgp.view_forum IS NULL AND (SELECT view_forums FROM groups WHERE ID=?)=1)
-	GROUP BY f.ID', 'ii', array($user_info['group'], $user_info['group']));
+	GROUP BY f.ID
+	ORDER BY c.sort_order ASC,f.sort_order ASC', 'ii', array($user_info['group'], $user_info['group']));
 $statement->bind_result($category_id,$category_name, $forum_name, $forum_description, $forum_id, $num_topics, $num_posts);
 
 $category_rows = new MultiPageElement();
