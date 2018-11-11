@@ -8,10 +8,57 @@ if (!$user_info['permissions']['access_admin_panel']) {
 	die;
 }
 
+//get a list of existing categories
+$categories = array();
+$statement = query('SELECT ID,name FROM category ORDER BY sort_order ASC');
+$statement->bind_result($category_id, $name);
+while ($statement->fetch()) {
+	$categories[$category_id] = $name;
+}
+$statement->close();
+
+$category_select_options = new MultiPageElement();
+foreach ($categories as $category_id => $category_name) {
+	$category_select_option = new PageElement('category_dropdown_item.html');
+	$category_select_option->bind('category_id', $category_id);
+	$category_select_option->bind('category_name', htmlspecialchars($category_name));
+	$category_select_options->addElement($category_select_option);
+}
+$page_params['category_select_options'] = $category_select_options->render();
+
+if (isset($_POST['add_category'])) {
+	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+	$statement = query('SELECT MAX(sort_order)+1 FROM category');
+	$statement->bind_result($new_sort_order);
+	$statement->fetch();
+	$statement->close();
+	query('INSERT INTO category(name,sort_order) VALUES(?,?)', 'si', array($_POST['new_category_name'], $new_sort_order))->close();
+	$mysqli->commit();
+}
+
+if (isset($_POST['add_forum'])) {
+	$new_category_id = intval($_POST['category_to_add_to']);
+	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+	$statement = query('SELECT 1 FROM category WHERE ID=?', 'i', array($new_category_id));
+	$category_exists = $statement->fetch();
+	$statement->close();
+	if ($category_exists) {
+		$statement = query('SELECT MAX(sort_order)+1 FROM forum WHERE category_ID=?', 'i', array($new_category_id));
+		$statement->bind_result($new_max_sort_order);
+		$statement->fetch();
+		if (empty($new_max_sort_order)) {
+			$new_max_sort_order = 1;
+		}
+		$statement->close();
+		query('INSERT INTO forum(name,category_ID,sort_order) VALUES(?,?,?)', 'sii', array($_POST['new_forum_name'], $new_category_id, $new_max_sort_order))->close();
+	}
+	$mysqli->commit();
+}
+
 if (isset($_POST['form_sent'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 	
-	//get a list of existing category IDs
+	//get a list of existing category IDs (this is done again to be part of the transaction)
 	$category_ids = array();
 	$statement = query('SELECT ID FROM category');
 	$statement->bind_result($category_id);
