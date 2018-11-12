@@ -3,6 +3,11 @@
 		<a href="/forums/admin/permissions/<$(forum_id)/>" class="btn"><i class="fas fa-pen"></i></a>
 		<a href="/forums/admin/delete_forum/<$(forum_id)/>" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
 	</td>
-	<td><i class="far fa-check-circle"></i>&nbsp;<input type="text" name="forums[<$(forum_id)/>][name]" value="<$(forum_name)/>" /></td>
-	<td style="background-color: #DDF" align="center" valign="center"><input type="number" name="forums[<$(forum_id)/>][sort_order]" value="<$(sort_order)/>" /></td>
+	<td>
+		<input type="text" name="forums[<$(forum_id)/>][name]" value="<$(forum_name)/>" /><br />
+		<textarea name="forums[<$(forum_id)/>][description]" cols="40" rows="3"><$(description)/></textarea>
+	</td>
+	<td style="background-color: #DDF" align="center" valign="center">
+		<input type="number" name="forums[<$(forum_id)/>][sort_order]" value="<$(sort_order)/>" />
+	</td>
 </tr>
