@@ -5,5 +5,5 @@ RewriteCond %{REQUEST_URI} !^/static/
 RewriteRule ^(.*)$ dispatcher.php [L]
 
 #if this is a static file but doesn't verbatim exist, still push this to the dispatcher
-RewriteCond /var/www/html/%{REQUEST_URI} !-f
+RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_URI} !-f
 RewriteRule ^(.*)$ dispatcher.php [L]
