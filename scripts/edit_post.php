@@ -22,6 +22,7 @@ if (isset($_POST['cancel_edit'])) { //we decided to cancel, so redirect the user
 }
 if (isset($_POST['submit_edit'])) { //we submitted the edit
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+	query('SET @forum_user_id=?', 'i', array($user_info['id'])); //set the user ID of the user making the edit in database triggers
 	query('UPDATE post SET description=? WHERE id=?', 'si', array($_POST['message'], $post_id))->close(); //update the post content
 	if ($is_first_post) { //if this is the first post on a topic, also update the topic subject
 		query('UPDATE topic SET name=? WHERE id=?', 'si', array($_POST['subject'], $topic_id))->close();

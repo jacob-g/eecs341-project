@@ -28,6 +28,7 @@ $statement->close();
 //if we are trying to submit a reply and have permission to, then do so
 if ($can_post_reply && isset($_POST['post_reply'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE); //begin a MySQLi transaction for creating the reply
+	query('SET @forum_user_id=?', 'i', array($user_info['id'])); //set the user ID of the user making the post for use in database triggers
 	query('INSERT INTO post(topic_ID,name,description,poster_ID) VALUES(?,\'\',?,?)', 'isi', array($topic_id, $_POST['message'], $user_info['id']))->close();
 	$mysqli->commit();
 }
