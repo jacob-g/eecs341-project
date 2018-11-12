@@ -17,6 +17,9 @@ if ($statement->fetch()) { //the topic exists, and we have a topic and forum nam
 }
 $statement->close();
 
+//increment the view counter (we don't bother with a transaction for this one since view count does not affect anything else and it is not critical to maintain its integrity)
+query('UPDATE topic SET num_views=num_views+1 WHERE ID=?', 'i', array($topic_id));
+
 //see if the user is allowed to submit a reply
 $statement = query('SELECT g.ID FROM groups AS g LEFT JOIN forum_group_permissions AS fgp ON fgp.group_ID=g.ID WHERE g.ID=? AND (fgp.post_replies=1 OR (fgp.post_replies IS NULL AND g.post_replies=1))', 'i', array($user_info['group']));
 $can_post_reply = $statement->fetch();

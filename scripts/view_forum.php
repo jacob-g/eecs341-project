@@ -15,8 +15,8 @@ if ($statement->fetch()) { //if we have the ID, then set the forum title in all 
 }
 $statement->close();
 
-$statement = query('SELECT t.ID,t.name,MAX(p.posted),COUNT(p.ID)-1 FROM topic AS t LEFT JOIN post AS p ON p.topic_ID=t.ID WHERE t.forum_ID=? GROUP BY t.ID ORDER BY MAX(p.posted) DESC', 'i', array($forum_id));
-$statement->bind_result($topic_id, $subject, $last_post_time, $num_replies);
+$statement = query('SELECT t.ID,t.name,MAX(p.posted),COUNT(p.ID)-1,t.num_views FROM topic AS t LEFT JOIN post AS p ON p.topic_ID=t.ID WHERE t.forum_ID=? GROUP BY t.ID ORDER BY MAX(p.posted) DESC', 'i', array($forum_id));
+$statement->bind_result($topic_id, $subject, $last_post_time, $num_replies, $num_views);
 
 $topic_rows = new MultiPageElement();
 while ($statement->fetch()) {
@@ -25,6 +25,7 @@ while ($statement->fetch()) {
 	$topic_row->bind('topic_id', $topic_id);
 	$topic_row->bind('last_post_time', $last_post_time);
 	$topic_row->bind('num_replies', $num_replies);
+	$topic_row->bind('num_views', $num_views);
 	$topic_rows->addElement($topic_row);
 }
 $page_params['topic_rows'] = $topic_rows->render();
