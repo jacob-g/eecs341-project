@@ -21,7 +21,7 @@ $statement->close();
 query('UPDATE topic SET num_views=num_views+1 WHERE ID=?', 'i', array($topic_id));
 
 //see if the user is allowed to submit a reply
-$statement = query('SELECT g.ID FROM groups AS g LEFT JOIN forum_group_permissions AS fgp ON fgp.group_ID=g.ID WHERE g.ID=? AND (fgp.post_replies=1 OR (fgp.post_replies IS NULL AND g.post_replies=1))', 'i', array($user_info['group']));
+$statement = query('SELECT g.ID FROM groups AS g LEFT JOIN forum_group_permissions AS fgp ON fgp.forum_ID=? AND fgp.group_ID=g.ID WHERE g.ID=? AND (fgp.post_replies=1 OR (fgp.post_replies IS NULL AND g.post_replies=1))', 'ii', array($forum_id, $user_info['group']));
 $can_post_reply = $statement->fetch();
 $statement->close();
 
