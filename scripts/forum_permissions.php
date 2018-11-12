@@ -22,17 +22,19 @@ $statement->close();
 if (isset($_POST['form_sent'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE); //begin a MySQLi transaction for updating the permissions
 	query('DELETE FROM forum_group_permissions WHERE forum_ID=?', 'i', array($forum_id))->close(); //delete all existing permission entries
-	foreach ($_POST['permissions'] as $group_id => $group_permissions) {
-		if (!isset($group_permissions['inherit'])) {
-			query('INSERT INTO forum_group_permissions(group_ID,forum_ID,view_forum,post_topics,post_replies) VALUES(?,?,?,?,?)', 'iiiii', 
-				array(
-					$group_id,
-					$forum_id,
-					isset($group_permissions['view_forum']) ? 1 : 0,
-					isset($group_permissions['post_topics']) ? 1 : 0,
-					isset($group_permissions['post_replies']) ? 1 : 0
-				)
-			)->close();
+	if (isset($_POST['permissions'])) {
+		foreach ($_POST['permissions'] as $group_id => $group_permissions) {
+			if (!isset($group_permissions['inherit'])) {
+				query('INSERT INTO forum_group_permissions(group_ID,forum_ID,view_forum,post_topics,post_replies) VALUES(?,?,?,?,?)', 'iiiii', 
+					array(
+						$group_id,
+						$forum_id,
+						isset($group_permissions['view_forum']) ? 1 : 0,
+						isset($group_permissions['post_topics']) ? 1 : 0,
+						isset($group_permissions['post_replies']) ? 1 : 0
+					)
+				)->close();
+			}
 		}
 	}
 	$mysqli->commit();
