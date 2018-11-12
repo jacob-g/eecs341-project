@@ -15,7 +15,8 @@ if ($statement->fetch()) { //if we have the ID, then set the forum title in all 
 }
 $statement->close();
 
-$statement = query('SELECT t.ID,t.name,MAX(p.posted),COUNT(p.ID)-1,t.num_views FROM topic AS t LEFT JOIN post AS p ON p.topic_ID=t.ID WHERE t.forum_ID=? GROUP BY t.ID ORDER BY MAX(p.posted) DESC', 'i', array($forum_id));
+//get the topics in this forum
+$statement = query('SELECT t.ID AS topic_id,t.name,MAX(p.posted) AS last_post_time,COUNT(p.ID)-1 AS num_replies,t.num_views FROM topic AS t LEFT JOIN post AS p ON p.topic_ID=t.ID WHERE t.forum_ID=? GROUP BY t.ID ORDER BY MAX(p.posted) DESC', 'i', array($forum_id));
 $statement->bind_result($topic_id, $subject, $last_post_time, $num_replies, $num_views);
 
 $topic_rows = new MultiPageElement();
