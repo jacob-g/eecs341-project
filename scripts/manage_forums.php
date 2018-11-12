@@ -98,9 +98,11 @@ $category_tables = new MultiPageElement();
 $last_category_id = -1;
 $last_category_row = null;
 $forum_rows = null;
-//TODO: do some sort of outer join so that empty categories show up too
-$statement = query('SELECT c.ID AS cid,c.name AS category_name,f.ID AS fid,f.name AS forum_name,f.description AS forum_description,c.sort_order AS cat_sort_order,f.sort_order AS f_sort_order FROM forum AS f LEFT JOIN category AS c ON c.ID=f.category_ID ORDER BY c.sort_order,f.sort_order ASC');
-$statement->bind_result($category_id, $category_name, $forum_id, $forum_name, $forum_description, $category_sort_order, $forum_sort_order);
+//select all categories and their constituent forums - we use a RIGHT JOIN so that even empty categories with no forums are shown (we don't need to do a FULL OUTER JOIN because every forum is guaranteed to have an attached category thanks to the foreign key)
+$statement = query('
+	SELECT f.ID IS NOT NULL AS forum_exists,c.ID AS cid,c.name AS category_name,f.ID AS fid,f.name AS forum_name,f.description AS forum_description,c.sort_order AS cat_sort_order,f.sort_order AS f_sort_order FROM forum AS f RIGHT JOIN category AS c ON c.ID=f.category_ID 
+	ORDER BY c.sort_order,f.sort_order ASC');
+$statement->bind_result($forum_exists, $category_id, $category_name, $forum_id, $forum_name, $forum_description, $category_sort_order, $forum_sort_order);
 while ($statement->fetch()) {
 	if ($last_category_id != $category_id) {
 		if ($last_category_id != -1) {
@@ -114,12 +116,14 @@ while ($statement->fetch()) {
 		$last_category_row->bind('sort_order', $category_sort_order);
 		$forum_rows = new MultiPageElement();
 	}
-	$forum_row = new PageElement('manage_forums_forum_row.html');
-	$forum_row->bind('forum_name', htmlspecialchars($forum_name));
-	$forum_row->bind('forum_id', $forum_id);
-	$forum_row->bind('sort_order', $forum_sort_order);
-	$forum_row->bind('description', htmlspecialchars($forum_description));
-	$forum_rows->addElement($forum_row);
+	if ($forum_exists) {
+		$forum_row = new PageElement('manage_forums_forum_row.html');
+		$forum_row->bind('forum_name', htmlspecialchars($forum_name));
+		$forum_row->bind('forum_id', $forum_id);
+		$forum_row->bind('sort_order', $forum_sort_order);
+		$forum_row->bind('description', htmlspecialchars($forum_description));
+		$forum_rows->addElement($forum_row);
+	}
 }
 $statement->close();
 
