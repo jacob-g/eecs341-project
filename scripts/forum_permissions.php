@@ -38,6 +38,8 @@ if (isset($_POST['form_sent'])) {
 		}
 	}
 	$mysqli->commit();
+	redirect('/forums/admin/manage_forums/?permupdate');
+	die;
 }
 
 //display the permission rows for each group

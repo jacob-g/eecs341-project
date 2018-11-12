@@ -28,6 +28,11 @@ if (isset($_POST['form_sent'])) {
 	query('DELETE FROM topic WHERE forum_ID=?', 'i', array($forum_id))->close();
 	query('DELETE FROM forum WHERE ID=?', 'i', array($forum_id))->close();
 	$mysqli->commit();
+	redirect('/forums/admin/manage_forums/?deletedforum');
+	die;
+}
+
+if (isset($_POST['cancel'])) {
 	redirect('/forums/admin/manage_forums/');
 	die;
 }

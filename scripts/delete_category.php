@@ -29,6 +29,11 @@ if (isset($_POST['form_sent'])) {
 	query('DELETE FROM forum WHERE ID IN (SELECT ID FROM (SELECT ID,category_ID FROM forum) AS f WHERE category_ID=?)', 'i', array($category_id))->close();
 	query('DELETE FROM category WHERE ID=?', 'i', array($category_id))->close();
 	$mysqli->commit();
+	redirect('/forums/admin/manage_forums/?deletedcategory');
+	die;
+}
+
+if (isset($_POST['cancel'])) {
 	redirect('/forums/admin/manage_forums/');
 	die;
 }

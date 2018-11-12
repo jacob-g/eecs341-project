@@ -8,6 +8,21 @@ if (!$user_info['permissions']['access_admin_panel']) {
 	die;
 }
 
+$page_params['notice'] = '';
+if (isset($_GET['permupdate'])) {
+	$update_notice = new PageElement('basicnotice.html');
+	$update_notice->bind('text', 'Permissions updated successfully!');
+	$page_params['notice'] = $update_notice->render();
+} else if (isset($_GET['deletedforum'])) {
+	$update_notice = new PageElement('basicnotice.html');
+	$update_notice->bind('text', 'Forum deleted successfully!');
+	$page_params['notice'] = $update_notice->render();
+} else if (isset($_GET['deletedcategory'])) {
+	$update_notice = new PageElement('basicnotice.html');
+	$update_notice->bind('text', 'Category deleted successfully!');
+	$page_params['notice'] = $update_notice->render();
+}
+
 if (isset($_POST['add_category'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 	$statement = query('SELECT MAX(sort_order)+1 FROM category');
