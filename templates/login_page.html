@@ -5,7 +5,7 @@
 	
 	<form action="/login/" method="post" enctype="multipart/form-data">
 		<$(form_elements)/>
-		<p><input type="submit" class="btn btn-primary" value="Log in" name="form_sent" /></p>
+		<p><input type="hidden" name="redirect_url" value="<$(redirect_url)/>" /><input type="submit" class="btn btn-primary" value="Log in" name="form_sent" /></p>
 	</form>
 	<p>
 		<a href="/register/">Create a new Account</a><br /><br />

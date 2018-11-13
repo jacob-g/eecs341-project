@@ -58,4 +58,19 @@ function create_form($fields) {
 	return $form_elements;
 }
 
+//create a set of breadcrumbs for navigation
+function create_breadcrumbs($links) {
+	$breadcrumbs_wrapper = new PageElement('breadcrumbs.html');
+	$breadcrumbs = new MultiPageElement();
+	foreach ($links as $url => $caption) {
+		$breadcrumb = new PageElement('breadcrumbs_item.html');
+		$breadcrumb->bind('url', $url);
+		$breadcrumb->bind('text', $caption);
+		$breadcrumbs->addElement($breadcrumb);
+	}
+	$breadcrumbs_wrapper->bind('breadcrumbs', $breadcrumbs->render());
+	return $breadcrumbs_wrapper->render();
+}
+
 $global_page_params['above_page_text'] = '';
+$global_page_params['breadcrumbs'] = '';

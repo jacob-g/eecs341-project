@@ -31,6 +31,11 @@ $page_routes = array(
 		'content'	=> 'edit-post.html',
 		'behavior'	=> 'edit_post.php'
 	),
+	'/forums/history/$post_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'post_history.html',
+		'behavior'	=> 'post_history.php'
+	),
 	'/forums/forum/$forum_id' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'view_forum.html',

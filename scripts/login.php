@@ -26,7 +26,7 @@ if (isset($_POST['form_sent'])) {
 	if ($statement->fetch()) {
 		$_SESSION['user_id'] = $user_id;
 		$statement->close();
-		redirect('/');
+		redirect($_POST['redirect_url']);
 	} else { //...and if there aren't, show a warning to the user saying there aren't
 		$alert_element = new PageElement('basicwarning.html');
 		$alert_element->bind('text', 'Invalid username or password');
@@ -46,4 +46,12 @@ $form_fields = create_form(array(
 		'caption'	=> 'Password'
 	)
 ));
+
 $page_params['form_elements'] = $form_fields->render();
+
+//populate the redirect URL with either the same one we had before or the page that sent us here
+if (isset($_POST['redirect_url'])) {
+	$page_params['redirect_url'] = $_POST['redirect_url'];
+} else {
+	$page_params['redirect_url'] = $_SERVER['HTTP_REFERER'];
+}

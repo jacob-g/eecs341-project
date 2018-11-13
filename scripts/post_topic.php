@@ -29,6 +29,7 @@ if (isset($_POST['form_sent'])) {
 	
 	if (empty($errors)) {
 		$mysqli->begin_transaction();
+		query('SET @forum_user_id=?', 'i', array($user_info['id'])); //set the user ID of the user making the post for use in database triggers
 		//make the topic
 		query('INSERT INTO topic(forum_ID,name) VALUES(?,?)', 'is', array($forum_id, $_POST['subject']))->close();
 		//get the topic's ID
@@ -48,3 +49,10 @@ if (isset($_POST['form_sent'])) {
 		$page_params['error_message'] = $alert_element->render();
 	}
 }
+
+//generate breadcrumbs
+$breadcrumbs = array(
+	'/forums/' => 'Forums',
+	'/forums/forum/' . $forum_id => htmlspecialchars($forum_name),
+	'' => 'Post New Topic'
+);

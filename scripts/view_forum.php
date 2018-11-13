@@ -49,3 +49,9 @@ if ($statement->fetch()) {
 }
 
 $page_params['above_page_text'] = $forum_header->render();
+
+//generate breadcrumbs
+$breadcrumbs = array(
+	'/forums/' => 'Forums',
+	'/forums/forum/' . $forum_id => htmlspecialchars($forum_name),
+);
