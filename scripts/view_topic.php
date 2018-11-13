@@ -54,6 +54,12 @@ while ($statement->fetch()) {
 		$edit_link->bind('post_id', $post_id);
 		$post_actions[] = $edit_link->render();
 	}
+	//see if the user can view the post history (currently considered an admin feature)
+	if ($user_info['permissions']['access_admin_panel']) {
+		$history_link = new PageElement('post_history_link.html');
+		$history_link->bind('post_id', $post_id);
+		$post_actions[] = $history_link->render();
+	}
 	//see if the user has permission to delete the post (same way as checking editing posts)
 	if (($author_id == $user_info['id'] && $user_info['permissions']['delete_own_posts']) || $user_info['permissions']['delete_other_posts']) {
 		$delete_link = new PageElement('delete_post_link.html');
