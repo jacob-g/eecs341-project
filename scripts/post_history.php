@@ -14,7 +14,6 @@ $statement->bind_result($topic_id, $forum_id, $forum_name, $topic_name);
 $post_exists = $statement->fetch();
 $statement->close();
 if (!$post_exists) {
-	$statement->close();
 	$page = new RoutedPage('base_template.html', 'error404.html', 'error404.php');
 	echo $page->render();
 	die;
