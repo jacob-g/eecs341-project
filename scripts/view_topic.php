@@ -90,3 +90,10 @@ if ($can_post_reply) {
 } else {
 	$page_params['reply_box'] = '';
 }
+
+//generate breadcrumbs
+$breadcrumbs = array(
+	'/forums/' => 'Forums',
+	'/forums/forum/' . $forum_id => htmlspecialchars($forum_name),
+	'/forums/forum/' . $forum_id . '/topic/' . $topic_id => htmlspecialchars($topic_name)
+);

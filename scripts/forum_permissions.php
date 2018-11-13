@@ -62,3 +62,9 @@ while ($statement->fetch()) {
 $statement->close();
 
 $page_params['permission_rows'] = $permission_rows->render();
+
+//generate breadcrumbs
+$breadcrumbs = array(
+	'/forums/admin/manage_forums/' => 'Forum Management',
+	'' => 'Edit Permissions'
+);

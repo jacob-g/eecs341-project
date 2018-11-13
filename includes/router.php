@@ -19,9 +19,13 @@ class RoutedPage {
 		$out_text = str_replace('<$(page_contents)/>', $this->raw_text, $this->base_template);
 		$page_params = array_merge($page_params, $global_page_params);
 		include SRV_ROOT . '/scripts/' . $this->script_file;
+		if (isset($breadcrumbs)) {
+			$page_params['breadcrumbs'] = create_breadcrumbs($breadcrumbs);
+		}
 		foreach ($page_params as $key => $val) {
 			$out_text = str_replace('<$(' . $key . ')/>', $val, $out_text);
 		}
+		
 		return $out_text;
 	}
 }

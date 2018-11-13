@@ -49,3 +49,10 @@ if (isset($_POST['form_sent'])) {
 		$page_params['error_message'] = $alert_element->render();
 	}
 }
+
+//generate breadcrumbs
+$breadcrumbs = array(
+	'/forums/' => 'Forums',
+	'/forums/forum/' . $forum_id => htmlspecialchars($forum_name),
+	'' => 'Post New Topic'
+);

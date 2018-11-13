@@ -40,3 +40,9 @@ if (isset($_POST['cancel'])) {
 
 $page_params['category_name'] = htmlspecialchars($category_name);
 $page_params['category_id'] = $category_id;
+
+//generate breadcrumbs
+$breadcrumbs = array(
+	'/forums/admin/manage_forums/' => 'Forum Management',
+	'' => 'Delete Category'
+);

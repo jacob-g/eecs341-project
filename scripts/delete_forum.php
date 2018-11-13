@@ -39,3 +39,9 @@ if (isset($_POST['cancel'])) {
 
 $page_params['forum_name'] = htmlspecialchars($forum_name);
 $page_params['forum_id'] = $forum_id;
+
+//generate breadcrumbs
+$breadcrumbs = array(
+	'/forums/admin/manage_forums/' => 'Forum Management',
+	'' => 'Delete Forum'
+);
