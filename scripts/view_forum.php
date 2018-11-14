@@ -68,3 +68,12 @@ $breadcrumbs = array(
 	'/forums/' => 'Forums',
 	'/forums/forum/' . $forum_id => htmlspecialchars($forum_name),
 );
+
+//generate pagination
+$pagination = true;
+$cur_page = $page_number;
+//get the number of pages
+$statement = query('SELECT CEIL(COUNT(ID)/?) FROM topic WHERE forum_ID=?', 'ii', array(TOPICS_PER_PAGE, $forum_id));
+$statement->bind_result($max_page);
+$statement->fetch();
+$statement->close();

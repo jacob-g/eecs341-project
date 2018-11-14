@@ -110,3 +110,12 @@ $breadcrumbs = array(
 	'/forums/forum/' . $forum_id => htmlspecialchars($forum_name),
 	'/forums/forum/' . $forum_id . '/topic/' . $topic_id => htmlspecialchars($topic_name)
 );
+
+//generate pagination
+$pagination = true;
+//to do so, get the number of pages
+$statement = query('SELECT CEIL(COUNT(ID)/?) FROM post WHERE topic_ID=?', 'ii', array(POSTS_PER_PAGE, $topic_id));
+$statement->bind_result($max_page);
+$statement->fetch();
+$statement->close();
+$cur_page = $page_number;

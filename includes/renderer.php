@@ -72,5 +72,63 @@ function create_breadcrumbs($links) {
 	return $breadcrumbs_wrapper->render();
 }
 
+//generate pagination links
+function create_pagination($cur_page, $max_page) {
+	if ($max_page == 1) {
+		return '';
+	} else {
+		//generate the list of numbers we're going to show
+		$page_numbers = array(1);
+		for ($offset = -2; $offset <= 2; $offset++) {
+			if ($cur_page + $offset > 1 && $cur_page + $offset < $max_page) {
+				$page_numbers[] = $cur_page + $offset;
+			}
+		}
+		$page_numbers[] = $max_page;
+		
+		$pagination = new PageElement('pagination.html');
+		
+		$page_links = new MultiPageElement();
+		
+		//add a link to the previous page
+		$previous_page_link = new PageElement('pagination_item.html');
+		$previous_page_link->bind('link_text', 'Previous');
+		$previous_page_link->bind('active', '');
+		$previous_page_link->bind('disabled', $cur_page == 1 ? 'disabled' : '');
+		$previous_page_link->bind('page_number', $cur_page == 1 ? 1 : $cur_page - 1);
+		$page_links->addElement($previous_page_link);
+		
+		//add a link to all the numbered pages
+		$last_page_number = 0;
+		foreach ($page_numbers as $page) {
+			if ($page - $last_page_number > 1) { //show an ellipsis if there's a gap between the last two shown numbers
+				$page_link = new PageElement('pagination_ellipsis.html');
+				$page_links->addElement($page_link);
+			}
+			//generate a pagination link
+			$page_link = new PageElement('pagination_item.html');
+			$page_link->bind('page_number', $page);
+			$page_link->bind('link_text', $page);
+			$page_link->bind('active', $page == $cur_page ? 'active' : '');
+			$page_link->bind('disabled', '');
+			$page_links->addElement($page_link);
+			$last_page_number = $page;
+		}
+		
+		//add a link to the next page
+		$previous_page_link = new PageElement('pagination_item.html');
+		$previous_page_link->bind('link_text', 'Next');
+		$previous_page_link->bind('active', '');
+		$previous_page_link->bind('disabled', $cur_page == $max_page ? 'disabled' : '');
+		$previous_page_link->bind('page_number', $cur_page == $max_page ? $max_page : $cur_page + 1);
+		$page_links->addElement($previous_page_link);
+		
+		$pagination->bind('page_links', $page_links->render());
+		return $pagination->render();
+	}
+}
+
+//set special page parameters to blank by default
 $global_page_params['above_page_text'] = '';
 $global_page_params['breadcrumbs'] = '';
+$global_page_params['pagination'] = '';

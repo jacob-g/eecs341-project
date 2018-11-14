@@ -22,6 +22,9 @@ class RoutedPage {
 		if (isset($breadcrumbs)) {
 			$page_params['breadcrumbs'] = create_breadcrumbs($breadcrumbs);
 		}
+		if (isset($pagination)) {
+			$page_params['pagination'] = create_pagination($cur_page, $max_page);
+		}
 		foreach ($page_params as $key => $val) {
 			$out_text = str_replace('<$(' . $key . ')/>', $val, $out_text);
 		}
