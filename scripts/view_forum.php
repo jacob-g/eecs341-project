@@ -37,6 +37,7 @@ $statement->close();
 $page_params['topic_rows'] = $topic_rows->render();
 $page_params['forum_id'] = $forum_id;
 
+//show a 404 if no topics exist (bad page number)
 if (!$topics_exist) {
 	$page = new RoutedPage('base_template.html', 'error404.html', 'error404.php');
 	echo $page->render();

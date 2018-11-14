@@ -47,4 +47,14 @@ bind_result_array($statement, $user_info['permissions']);
 $statement->fetch();
 $statement->close();
 
-//$user_info['permissions'] = $group_permissions;
+//check for bans
+$statement = query('SELECT message FROM bans WHERE (user_ID=? OR ip=?) AND (expires IS NULL OR EXPIRES>NOW())', 'is', array($user_info['id'], $_SERVER['REMOTE_ADDR']));
+$statement->bind_result($ban_message);
+$is_banned = $statement->fetch();
+$statement->close();
+if ($is_banned) {
+	$ban_page = new RoutedPage('base_template.html', 'banned.html', 'banned.php');
+	$global_page_params['ban_reason'] = htmlspecialchars($ban_message);
+	echo $ban_page->render();
+	die;
+}
