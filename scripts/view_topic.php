@@ -25,18 +25,33 @@ $statement = query('SELECT g.ID FROM groups AS g LEFT JOIN forum_group_permissio
 $can_post_reply = $statement->fetch();
 $statement->close();
 
+//get the current page (default to 1 if none specified)
+$cur_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+//get the number of pages
+$statement = query('SELECT CEIL(COUNT(ID)/?) FROM post WHERE topic_ID=?', 'ii', array(POSTS_PER_PAGE, $topic_id));
+$statement->bind_result($max_page);
+$statement->fetch();
+$statement->close();
+
 //if we are trying to submit a reply and have permission to, then do so
 if ($can_post_reply && isset($_POST['post_reply'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE); //begin a MySQLi transaction for creating the reply
 	query('SET @forum_user_id=?', 'i', array($user_info['id']))->close(); //set the user ID of the user making the post for use in database triggers
 	query('INSERT INTO post(topic_ID,name,description,poster_ID) VALUES(?,\'\',?,?)', 'isi', array($topic_id, $_POST['message'], $user_info['id']))->close();
+	//get the number of pages again since we just added a post, which may change the number of pages
+	$statement = query('SELECT CEIL(COUNT(ID)/?) FROM post WHERE topic_ID=?', 'ii', array(POSTS_PER_PAGE, $topic_id));
+	$statement->bind_result($max_page);
+	$statement->fetch();
+	$statement->close();
 	$mysqli->commit();
+	
+	//redirect the user to the last page of the topic (where their new post will appear)
+	redirect('/forums/forum/' . $forum_id . '/topic/' . $topic_id . '?page=' . $max_page);
 }
 
-$page_number = isset($_GET['page']) ? intval($_GET['page']) : 1;
-
 //get all of the posts associated with this topic and show them
-$statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered,g.user_title FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID LEFT JOIN groups AS g ON g.ID=u.group_ID WHERE p.topic_ID=? ORDER BY posted ASC LIMIT ?,?', 'iii', array($topic_id, ($page_number - 1) * POSTS_PER_PAGE, POSTS_PER_PAGE));
+$statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered,g.user_title FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID LEFT JOIN groups AS g ON g.ID=u.group_ID WHERE p.topic_ID=? ORDER BY posted ASC LIMIT ?,?', 'iii', array($topic_id, ($cur_page - 1) * POSTS_PER_PAGE, POSTS_PER_PAGE));
 $statement->bind_result($post_id, $message, $author_username, $author_id, $post_time, $author_registered, $author_title);
 $post_rows = new MultiPageElement();
 $posts_exist = false;
@@ -113,9 +128,3 @@ $breadcrumbs = array(
 
 //generate pagination
 $pagination = true;
-//to do so, get the number of pages
-$statement = query('SELECT CEIL(COUNT(ID)/?) FROM post WHERE topic_ID=?', 'ii', array(POSTS_PER_PAGE, $topic_id));
-$statement->bind_result($max_page);
-$statement->fetch();
-$statement->close();
-$cur_page = $page_number;

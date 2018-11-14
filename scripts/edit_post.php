@@ -27,9 +27,14 @@ if (isset($_POST['submit_edit'])) { //we submitted the edit
 	if ($is_first_post) { //if this is the first post on a topic, also update the topic subject
 		query('UPDATE topic SET name=? WHERE id=?', 'si', array($_POST['subject'], $topic_id))->close();
 	}
+	//figure out the page the post is on
+	$statement = query('SELECT CEIL((COUNT(ID)+1)/?) FROM post WHERE topic_ID=? AND posted<(SELECT posted FROM post WHERE ID=?)', 'iii', array(POSTS_PER_PAGE, $topic_id, $post_id));
+	$statement->bind_result($page_number);
+	$statement->fetch();
+	$statement->close();
 	$mysqli->commit();
 	
-	redirect('/forums/forum/' . $forum_id . '/topic/' . $topic_id);
+	redirect('/forums/forum/' . $forum_id . '/topic/' . $topic_id . '?page=' . $page_number);
 	die;
 }
 
