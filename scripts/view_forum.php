@@ -15,12 +15,16 @@ if ($statement->fetch()) { //if we have the ID, then set the forum title in all 
 }
 $statement->close();
 
+$page_number = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
 //get the topics in this forum
-$statement = query('SELECT t.ID AS topic_id,t.name,MAX(p.posted) AS last_post_time,COUNT(p.ID)-1 AS num_replies,t.num_views FROM topic AS t LEFT JOIN post AS p ON p.topic_ID=t.ID WHERE t.forum_ID=? GROUP BY t.ID ORDER BY MAX(p.posted) DESC', 'i', array($forum_id));
+$statement = query('SELECT t.ID AS topic_id,t.name,MAX(p.posted) AS last_post_time,COUNT(p.ID)-1 AS num_replies,t.num_views FROM topic AS t LEFT JOIN post AS p ON p.topic_ID=t.ID WHERE t.forum_ID=? GROUP BY t.ID ORDER BY MAX(p.posted) DESC LIMIT ?,?', 'iii', array($forum_id, ($page_number - 1) * TOPICS_PER_PAGE, TOPICS_PER_PAGE));
 $statement->bind_result($topic_id, $subject, $last_post_time, $num_replies, $num_views);
 
 $topic_rows = new MultiPageElement();
+$topics_exist = false;
 while ($statement->fetch()) {
+	$topics_exist = true;
 	$topic_row = new PageElement('topic_row.html');
 	$topic_row->bind('subject', $subject);
 	$topic_row->bind('topic_id', $topic_id);
@@ -29,8 +33,15 @@ while ($statement->fetch()) {
 	$topic_row->bind('num_views', $num_views);
 	$topic_rows->addElement($topic_row);
 }
+$statement->close();
 $page_params['topic_rows'] = $topic_rows->render();
 $page_params['forum_id'] = $forum_id;
+
+if (!$topics_exist) {
+	$page = new RoutedPage('base_template.html', 'error404.html', 'error404.php');
+	echo $page->render();
+	die;
+}
 
 //render the header showing the topic name
 $forum_header = new PageElement('forum_header.html');
@@ -47,6 +58,7 @@ if ($statement->fetch()) {
 } else {
 	$forum_header->bind('post_topic_link', '');
 }
+$statement->close();
 
 $page_params['above_page_text'] = $forum_header->render();
 

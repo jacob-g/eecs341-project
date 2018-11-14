@@ -28,16 +28,21 @@ $statement->close();
 //if we are trying to submit a reply and have permission to, then do so
 if ($can_post_reply && isset($_POST['post_reply'])) {
 	$mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE); //begin a MySQLi transaction for creating the reply
-	query('SET @forum_user_id=?', 'i', array($user_info['id'])); //set the user ID of the user making the post for use in database triggers
+	query('SET @forum_user_id=?', 'i', array($user_info['id']))->close(); //set the user ID of the user making the post for use in database triggers
 	query('INSERT INTO post(topic_ID,name,description,poster_ID) VALUES(?,\'\',?,?)', 'isi', array($topic_id, $_POST['message'], $user_info['id']))->close();
 	$mysqli->commit();
 }
 
+$page_number = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
 //get all of the posts associated with this topic and show them
-$statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered,g.user_title FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID LEFT JOIN groups AS g ON g.ID=u.group_ID WHERE p.topic_ID=? ORDER BY posted ASC', 'i', array($topic_id));
+$statement = query('SELECT p.ID,p.description,u.name,u.ID,p.posted,u.registered,g.user_title FROM post AS p LEFT JOIN users AS u ON u.ID=p.poster_ID LEFT JOIN groups AS g ON g.ID=u.group_ID WHERE p.topic_ID=? ORDER BY posted ASC LIMIT ?,?', 'iii', array($topic_id, ($page_number - 1) * POSTS_PER_PAGE, POSTS_PER_PAGE));
 $statement->bind_result($post_id, $message, $author_username, $author_id, $post_time, $author_registered, $author_title);
 $post_rows = new MultiPageElement();
+$posts_exist = false;
 while ($statement->fetch()) {
+	$posts_exist = true;
+	
 	//create a row for each post
 	$post_row = new PageElement('post_row.html');
 	$post_row->bind('post_message', htmlspecialchars($message));
@@ -75,6 +80,14 @@ while ($statement->fetch()) {
 	$post_rows->addElement($post_row);
 }
 $statement->close();
+
+//show a 404 if no posts were returned (bad page number)
+if (!$posts_exist) {
+	$page = new RoutedPage('base_template.html', 'error404.html', 'error404.php');
+	echo $page->render();
+	die;
+}
+
 $page_params['post_rows'] = $post_rows->render();
 
 $topic_header = new PageElement('topic_header.html');
