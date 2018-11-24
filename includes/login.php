@@ -47,6 +47,14 @@ bind_result_array($statement, $user_info['permissions']);
 $statement->fetch();
 $statement->close();
 
+//add the links to administration pages
+if ($user_info['permissions']['access_admin_panel']) {
+	$admin_links = new PageElement('admin_links.html');
+	$global_page_params['admin_links'] = $admin_links->render();
+} else {
+	$global_page_params['admin_links'] = '';
+}
+
 //check for bans
 $statement = query('SELECT message FROM bans WHERE (user_ID=? OR ip=?) AND (expires IS NULL OR EXPIRES>NOW())', 'is', array($user_info['id'], $_SERVER['REMOTE_ADDR']));
 $statement->bind_result($ban_message);
