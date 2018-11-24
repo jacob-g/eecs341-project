@@ -78,7 +78,9 @@ $statement->bind_result($max_page);
 $statement->fetch();
 $statement->close();
 
-//if there are no pages, then make the maximum page 1 anyway (otherwise it would be 0)
+//if there are no pages, then make the maximum page 1 anyway (otherwise it would be 0) and show a blank topic row
 if ($max_page == 0) {
 	$max_page = 1;
+	$empty_forum_row = new PageElement('empty_forum_topic_row.html');
+	$page_params['topic_rows'] = $empty_forum_row->render();
 }
