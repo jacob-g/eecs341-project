@@ -56,6 +56,16 @@ $page_routes = array(
 		'content'	=> 'user_group_admin.html',
 		'behavior'	=> 'user_group_admin.php'
 	),
+	'/forums/admin/bans/' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'admin_bans.html',
+		'behavior'	=> 'admin_bans.php'
+	),
+	'/forums/admin/delete_ban/$ban_id' => array(
+		'template'	=> 'base_template.html',
+		'content'	=> 'delete_ban.html',
+		'behavior'	=> 'delete_ban.php'
+	),
 	'/forums/admin/manage_forums/' => array(
 		'template'	=> 'base_template.html',
 		'content'	=> 'modify-all-forums.html',

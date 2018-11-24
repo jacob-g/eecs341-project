@@ -1,0 +1,42 @@
+<$(error)/>
+
+<form action="/forums/admin/bans/" method="post" enctype="multipart/form-data">
+	<h3>Add Ban</h3>
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th>Username</th>
+				<td><input type="text" name="username" size="40" /></td>
+			</tr>
+			<tr>
+				<th>IP Address</th>
+				<td><input type="text" name="ip" size="40" /></td>
+			</tr>
+			<tr>
+				<th>Reason</th>
+				<td><input type="text" name="message" size="40" /></td>
+			</tr>
+			<tr>
+				<th>Time (days)</th>
+				<td><input type="number" name="expires" size="40" /></td>
+			</tr>
+		</tbody>
+	</table>
+	<p><input type="submit" class="btn btn-primary" name="form_sent" value="Add Ban" /></p>
+</form>
+
+<h3>Edit Bans</h3>
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr style="background-color: #AAF">
+			<th>Username</th>
+			<th>IP Address</th>
+			<th>Reason</th>
+			<th>Expires</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<$(ban_rows)/>
+	</tbody>
+</table>

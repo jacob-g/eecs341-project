@@ -1,0 +1,25 @@
+<h2>Delete Ban</h2>
+<p>Are you sure you want to delete the following ban?</p>
+<form action="/forums/admin/delete_ban/<$(ban_id)/>" method="post" enctype="multipart/form-data">
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th>Username</th>
+				<td><$(username)/></td>
+			</tr>
+			<tr>
+				<th>IP Address</th>
+				<td><$(ip)/></td>
+			</tr>
+			<tr>
+				<th>Message</th>
+				<td><$(message)/></td>
+			</tr>
+			<tr>
+				<th>Expiration</th>
+				<td><$(expires)/></td>
+			</tr>
+		</tbody>
+	</table>
+	<p><input type="submit" name="delete" value="Delete" class="btn btn-danger" /> <input type="submit" name="cancel" value="Cancel" class="btn btn-primary" /></p>
+</form>
